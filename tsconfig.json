@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    // "sourceMap": true,
+    // "target": "es2017",
+    // "baseUrl": "./src",
+    // "alwaysStrict": true,
+    // "noImplicitAny": true,
+    // "experimentalDecorators": true,
+    // "emitDecoratorMetadata": true,
+    // "allowSyntheticDefaultImports": true,
+    // "esModuleInterop": true,
+    // "moduleResolution": "node",
+    // "typeRoots": ["./node_modules/@types"]
+
+
+    // "target": "ES2017",
+    // "module": "commonjs",
+    // "declaration": true,
+    // "declarationMap": true,
+    // "declarationDir": "dist"
+    "target": "es5",
+        "lib": ["es5", "es6"],
+        "module": "commonjs",
+        // "outDir": "dist",
+        "baseUrl" : ".",
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        // "declaration": true,
+        "strict": false,
+        "strictNullChecks": true,
+        "noImplicitAny": true,
+        "esModuleInterop": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "example", "rollup.config.js"]
+}

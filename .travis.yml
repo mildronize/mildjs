@@ -1,0 +1,5 @@
+language: node_js
+node_js:
+  - 8
+before_script:
+  - npm install typeorm typedi typeorm-typedi-extensions reflect-metadata @types/node
