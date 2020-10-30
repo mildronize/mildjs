@@ -1,5 +1,6 @@
 # Route Controller
 
+[![Build Status](https://travis-ci.org/mildronize/route-controller.svg?branch=main)](https://travis-ci.org/mildronize/route-controller)
 
 ## Installation
 
