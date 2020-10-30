@@ -1,6 +1,6 @@
 {
   "name": "route-controller",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Simple Express decorator for router",
   "author": "Thada Wangthammang",
   "repository": "mildronize/route-controller",
@@ -17,7 +17,7 @@
     "format": "prettier --write \"src/**/*.ts\" ",
     "lint": "tslint -p tsconfig.json",
     "test": "jest --config jestconfig.json",
-    "before-publish" : "npm test && npm run lint",
+    "before-publish": "npm test && npm run lint",
     "before-commit": "npm run format"
   },
   "peerDependencies": {
