@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-// import  './decorator.interface';
 export * from './decorator.interface';
 
 export * from './decorators/controller';
@@ -9,5 +8,9 @@ export * from './decorators/utils';
 
 export * from './add-express-controller';
 
-// import  './decorator.interface';
+// Export all HTTP status codes from `http-status-codes` package.
+// Based on the Java Apache HttpStatus API. (http://hc.apache.org/httpclient-3.x/apidocs/org/apache/commons/httpclient/HttpStatus.html)
+
+export * from 'http-status-codes';
+
 // thanks router decorator from https://nehalist.io/routing-with-typescript-decorators/
