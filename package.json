@@ -1,6 +1,6 @@
 {
   "name": "route-controller",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Simple Express decorator for router",
   "author": "Thada Wangthammang",
   "repository": "mildronize/route-controller",
