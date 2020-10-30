@@ -2,7 +2,6 @@ import 'reflect-metadata';
 // import  './decorator.interface';
 export * from './decorator.interface';
 
-
 export * from './decorators/controller';
 export * from './decorators/http-methods';
 export * from './decorators/middleware';
