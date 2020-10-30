@@ -18,9 +18,7 @@
     "lint": "tslint -p tsconfig.json",
     "test": "jest --config jestconfig.json",
     "prepare": "run-s format lint test",
-    "publish:patch": "npm version patch --force",
-    "publish:only": "npm publish",
-    "publish": "run-s publish:patch publish:only"
+    "publish:patch": "npm version patch --force && npm publish"
   },
   "peerDependencies": {
     "reflect-metadata": ">= 0.1.0 < 0.2.0",

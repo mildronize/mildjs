@@ -8,8 +8,7 @@ export * from './decorators/utils';
 
 export * from './add-express-controller';
 
-export * from './exceptions/HTTPException';
-
+export * from './exceptions/HttpException';
 // Export all HTTP status codes from `http-status-codes` package.
 // Based on the Java Apache HttpStatus API. (http://hc.apache.org/httpclient-3.x/apidocs/org/apache/commons/httpclient/HttpStatus.html)
 
