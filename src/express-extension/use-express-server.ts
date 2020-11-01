@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { RouteDecorator } from '../decorators/interfaces/decorator.interface';
+import { RouteDecorator } from '../decorators/interfaces/route-metadata.interface';
 import { ModuleMetada } from '..';
 
 import { asyncHelper, injectDependencies, createProviders } from './utils';
