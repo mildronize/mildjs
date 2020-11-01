@@ -8,7 +8,7 @@ export function useExpressServer(app: express.Application, modules: any[]) {
   modules.forEach((_module) => {
     const module = Reflect.getMetadata('module', _module);
     // console.log(module);
-    console.log('addExpressControllerWithProviders');
+    // console.log('addExpressControllerWithProviders');
     addExpressControllerWithProviders(app, module);
   });
 
@@ -16,15 +16,13 @@ export function useExpressServer(app: express.Application, modules: any[]) {
 }
 
 function addExpressControllerWithProviders(app: express.Application, module: IModule) {
-
   const controllers = module.controllers;
   const providerInstances = createProviders(module.providers);
 
-  console.log(providerInstances[0]);
+  // console.log(providerInstances[0]);
 
   controllers.forEach((controller) => {
-
-    const instance =  injectDependencies(controller, providerInstances)  ;
+    const instance = injectDependencies(controller, providerInstances);
     // console.log(instance.constructor.name);
 
     const prefix = Reflect.getMetadata('prefix', controller);
@@ -42,10 +40,6 @@ function addExpressControllerWithProviders(app: express.Application, module: IMo
       } else {
         app[route.requestMethod](prefix + route.path, callInstance(route));
       }
-     
     });
-
   });
-
-
 }

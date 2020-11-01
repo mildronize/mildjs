@@ -18,12 +18,12 @@ export const Middleware = (middleware: any): MethodDecorator => {
     });
 
     // If the route is not exist, add it only `methodName` and `middleware`
-    if(!isExisted){
+    if (!isExisted) {
       routes.push({
         requestMethod: 'get',
-        path: "",
+        path: '',
         methodName: propertyKey,
-        middleware
+        middleware,
       });
     }
 

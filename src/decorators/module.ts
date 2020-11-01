@@ -8,4 +8,3 @@ export const Module = (injected: IModule = { controllers: [], providers: [] }): 
     Reflect.defineMetadata('module', injected, target);
   };
 };
-

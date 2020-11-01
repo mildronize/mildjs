@@ -5,7 +5,6 @@ export const Post = (path: string): MethodDecorator => httpMethodDecorator('post
 export const Put = (path: string): MethodDecorator => httpMethodDecorator('put', { path });
 export const Delete = (path: string): MethodDecorator => httpMethodDecorator('delete', { path });
 
-
 interface HttpMethodDecorator {
   path?: string;
 }
@@ -25,7 +24,6 @@ export function httpMethodDecorator(
     // Get the routes stored so far, extend it by the new route and re-set the metadata.
     let routes = Reflect.getMetadata('routes', target.constructor) as RouteDecorator[];
 
-
     let isExisted = false;
     routes.forEach((route: any) => {
       if (route.methodName === propertyKey) isExisted = true;
@@ -36,16 +34,16 @@ export function httpMethodDecorator(
       routes.push({
         requestMethod,
         path: data.path || '',
-        methodName: propertyKey
+        methodName: propertyKey,
       });
     }
 
-    // If the route is exist, 
+    // If the route is exist,
     routes = routes.map((route: any) => {
       // add middleware on existing method name in `routes`
       if (route.methodName === propertyKey)
         return {
-          requestMethod: requestMethod,
+          requestMethod,
           path: data.path || '',
           methodName: route.methodName,
           middleware: route.middleware,
