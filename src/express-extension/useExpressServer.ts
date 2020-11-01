@@ -20,6 +20,8 @@ function addExpressControllerWithProviders(app: express.Application, module: IMo
   const controllers = module.controllers;
   const providerInstances = createProviders(module.providers);
 
+  console.log(providerInstances[0]);
+
   controllers.forEach((controller) => {
 
     const instance =  injectDependencies(controller, providerInstances)  ;

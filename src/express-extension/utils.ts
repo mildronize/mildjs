@@ -1,11 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
+import { Container } from 'typedi';
+
 
 export const asyncHelper = (fn: any) => (req: Request, res: Response, next: NextFunction) => {
     fn(req, res, next).catch(next);
 };
 
 export function createProviders(providers: any[]) {
-    return providers.map(provider => new provider());
+    return providers.map(provider => Container.get(provider));
 }
 
 export function injectDependencies(controller: any, i: any[]): any {

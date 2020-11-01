@@ -19,3 +19,6 @@ export * from './middlewares';
 export * from 'http-status-codes';
 
 // thanks router decorator from https://nehalist.io/routing-with-typescript-decorators/
+
+
+export * from "typeorm-di";
