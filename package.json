@@ -1,6 +1,6 @@
 {
   "name": "route-controller",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Simple Express decorator for router",
   "author": "Thada Wangthammang",
   "repository": "mildronize/route-controller",
@@ -19,7 +19,7 @@
     "test": "jest --config jestconfig.json",
     "test:watch": "jest --config jestconfig.json --watch",
     "prepare": "run-s build",
-    "prepublishOnly": "run-s format lint test build",
+    "prepublish": "run-s format lint test build",
     "publish:patch": "npm version patch --force && npm publish",
     "example": "chokidar \"**/*.ts\" -c  \" ts-node example/addExpressModule/index.ts\""
   },
@@ -53,6 +53,7 @@
   "dependencies": {
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
+    "connect": "^3.7.0",
     "express": "~4.17.1",
     "http-status-codes": "^2.1.4",
     "reflect-metadata": "^0.1.13",
