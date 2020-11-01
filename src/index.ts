@@ -7,10 +7,10 @@ export * from './decorators/http-methods';
 export * from './decorators/middleware';
 export * from './decorators/utils';
 
-export * from './express-extension/useExpressServer';
-export * from './express-extension/addExpressController';
+export * from './express-extension/use-express-server';
+export * from './express-extension/add-express-controller';
 
-export * from './exceptions/HttpException';
+export * from './exceptions/http-exception';
 
 export * from './middlewares';
 // Export all HTTP status codes from `http-status-codes` package.

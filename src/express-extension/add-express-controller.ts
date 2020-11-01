@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import { RouteDecorator } from '../decorators/decorator.interface';
 import { IModule } from '..';
 
-import { asyncHelper, injectDependencies, createProviders } from './utils';
+import { asyncHelper } from './utils';
 
 // This function is Deprecated
 

@@ -1,1 +1,1 @@
-export * from './validateType';
+export * from './validate-type';
