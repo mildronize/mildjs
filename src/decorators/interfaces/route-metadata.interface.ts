@@ -1,4 +1,7 @@
+import { Middleware } from 'decorators/middleware';
 import { NextFunction, Response, Request } from 'express';
+
+export type IMiddleware = (req: Request, res: Response, next: NextFunction) => void;
 
 export interface RouteMetadata {
   // Path to our route
@@ -8,5 +11,5 @@ export interface RouteMetadata {
   // Method name within our class responsible for this route
   methodName: string;
   // Middleware
-  middleware?: (req: Request, res: Response, next: NextFunction) => void;
+  middlewares: IMiddleware[];
 }

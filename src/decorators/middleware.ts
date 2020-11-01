@@ -1,8 +1,6 @@
 import { RouteMetadata } from './interfaces/route-metadata.interface';
 
 export const Middleware = (...middlewares: any[]): MethodDecorator => {
-
-
   // `target` equals our class, `propertyKey` equals our decorated method name
   return (target, propertyKey: string): void => {
     // In case this is the first route to be registered the `routes` metadata is likely to be undefined at this point.
@@ -25,7 +23,7 @@ export const Middleware = (...middlewares: any[]): MethodDecorator => {
         requestMethod: 'get',
         path: '',
         methodName: propertyKey,
-        middleware,
+        middlewares,
       });
     }
 
@@ -37,7 +35,7 @@ export const Middleware = (...middlewares: any[]): MethodDecorator => {
           requestMethod: route.requestMethod,
           path: route.path,
           methodName: route.methodName,
-          middleware,
+          middlewares,
         };
       return route;
     });

@@ -1,3 +1,3 @@
 
-- [ ] Add multiple middleware
+- [X] Add multiple middleware
 - [ ] Add middleware add class level

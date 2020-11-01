@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { RouteMetadata } from '../decorators/interfaces/route-metadata.interface';
+import connect from 'connect';
+import { IMiddleware, RouteMetadata } from '../decorators/interfaces/route-metadata.interface';
 import { ModuleMetada } from '..';
 
 import { asyncHelper, injectDependencies, createProviders } from './utils';
@@ -13,6 +14,14 @@ export function useExpressServer(app: express.Application, modules: any[]) {
   });
 
   return true;
+}
+
+function combineMiddlewares(middlewares: IMiddleware[]) {
+  const chain = connect();
+  middlewares.forEach((middleware) => {
+    chain.use(middleware);
+  });
+  return chain;
 }
 
 function addExpressControllerWithProviders(app: express.Application, module: ModuleMetada) {
@@ -34,11 +43,16 @@ function addExpressControllerWithProviders(app: express.Application, module: Mod
       });
 
     routes.forEach((route: RouteMetadata) => {
-      if (route.hasOwnProperty('middleware') && route.middleware !== undefined) {
+      // console.log(route);
+      if (route.middlewares.length > 0) {
         // Call the middleware
-        app[route.requestMethod](prefix + route.path, route.middleware, callInstance(route));
+        const middleware = combineMiddlewares(route.middlewares);
+        // console.log(route.middlewares[0]);
+        // console.log(`Mapped route: [${route.requestMethod}] '${prefix}${route.path}' use middleware 0: ${route.middlewares[0]}`);
+        app[route.requestMethod](prefix + route.path, middleware, callInstance(route));
       } else {
         app[route.requestMethod](prefix + route.path, callInstance(route));
+        // console.log(`Mapped route: [${route.requestMethod}] '${prefix}${route.path}'`);
       }
     });
   });

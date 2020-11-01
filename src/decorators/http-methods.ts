@@ -35,6 +35,7 @@ export function httpMethodDecorator(
         requestMethod,
         path: data.path || '',
         methodName: propertyKey,
+        middlewares: [],
       });
     }
 
@@ -46,7 +47,7 @@ export function httpMethodDecorator(
           requestMethod,
           path: data.path || '',
           methodName: route.methodName,
-          middleware: route.middleware,
+          middlewares: route.middlewares,
         };
       return route;
     });

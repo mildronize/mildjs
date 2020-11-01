@@ -1,4 +1,4 @@
 export interface ModuleMetada {
-    controllers: any[];
-    providers: any[];
+  controllers: any[];
+  providers: any[];
 }
