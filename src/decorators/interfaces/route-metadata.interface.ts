@@ -1,6 +1,6 @@
 import { NextFunction, Response, Request } from 'express';
 
-export interface RouteDecorator {
+export interface RouteMetadata {
   // Path to our route
   path: string;
   // HTTP Request method (get, post, ...)

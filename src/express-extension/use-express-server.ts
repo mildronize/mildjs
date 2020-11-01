@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { RouteDecorator } from '../decorators/interfaces/route-metadata.interface';
+import { RouteMetadata } from '../decorators/interfaces/route-metadata.interface';
 import { ModuleMetada } from '..';
 
 import { asyncHelper, injectDependencies, createProviders } from './utils';
@@ -26,14 +26,14 @@ function addExpressControllerWithProviders(app: express.Application, module: Mod
     // console.log(instance.constructor.name);
 
     const prefix = Reflect.getMetadata('prefix', controller);
-    const routes: RouteDecorator[] = Reflect.getMetadata('routes', controller);
+    const routes: RouteMetadata[] = Reflect.getMetadata('routes', controller);
 
-    const callInstance = (route: RouteDecorator) =>
+    const callInstance = (route: RouteMetadata) =>
       asyncHelper(async (req: Request, res: Response, next: NextFunction) => {
         await instance[route.methodName](req, res, next);
       });
 
-    routes.forEach((route: RouteDecorator) => {
+    routes.forEach((route: RouteMetadata) => {
       if (route.hasOwnProperty('middleware') && route.middleware !== undefined) {
         // Call the middleware
         app[route.requestMethod](prefix + route.path, route.middleware, callInstance(route));

@@ -1,4 +1,4 @@
-import { RouteDecorator } from './interfaces/route-metadata.interface';
+import { RouteMetadata } from './interfaces/route-metadata.interface';
 
 export const Get = (path: string): MethodDecorator => httpMethodDecorator('get', { path });
 export const Post = (path: string): MethodDecorator => httpMethodDecorator('post', { path });
@@ -10,7 +10,7 @@ interface HttpMethodDecorator {
 }
 
 export function httpMethodDecorator(
-  requestMethod: RouteDecorator['requestMethod'],
+  requestMethod: RouteMetadata['requestMethod'],
   data: HttpMethodDecorator,
 ): MethodDecorator {
   // `target` equals our class, `propertyKey` equals our decorated method name
@@ -22,7 +22,7 @@ export function httpMethodDecorator(
     }
 
     // Get the routes stored so far, extend it by the new route and re-set the metadata.
-    let routes = Reflect.getMetadata('routes', target.constructor) as RouteDecorator[];
+    let routes = Reflect.getMetadata('routes', target.constructor) as RouteMetadata[];
 
     let isExisted = false;
     routes.forEach((route: any) => {

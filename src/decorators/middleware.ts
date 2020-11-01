@@ -1,6 +1,8 @@
-import { RouteDecorator } from './interfaces/decorator.interface';
+import { RouteMetadata } from './interfaces/route-metadata.interface';
 
-export const Middleware = (middleware: any): MethodDecorator => {
+export const Middleware = (...middlewares: any[]): MethodDecorator => {
+
+
   // `target` equals our class, `propertyKey` equals our decorated method name
   return (target, propertyKey: string): void => {
     // In case this is the first route to be registered the `routes` metadata is likely to be undefined at this point.
@@ -10,7 +12,7 @@ export const Middleware = (middleware: any): MethodDecorator => {
     }
 
     // Get the routes stored so far, extend it by the new route and re-set the metadata.
-    let routes = Reflect.getMetadata('routes', target.constructor) as RouteDecorator[];
+    let routes = Reflect.getMetadata('routes', target.constructor) as RouteMetadata[];
 
     let isExisted = false;
     routes.forEach((route: any) => {
