@@ -45,17 +45,30 @@ Note: for version 0.0.14
 
     }
     ```
+2. Setup the module
 
-2. Inject the controller to Express using `addExpressController`
+    ```typescript
+    import { Module } from 'route-controller';
+    import { UsersController } from './users.controller';
+
+    @Module({
+        controllers: [UsersController],
+        providers: []
+    })
+    export class UserModule { }
+    ```
+
+
+
+3. Inject the module to Express using `useExpressServer`
 
     ```typescript
     import express from 'express';
-    import { addExpressController } from 'route-controller';
-    import { UsersController } from './users.controller';
+    import { UserModule } from './users.module';
 
     app = express();
-    addExpressController(app, [
-        UsersController
+    useExpressServer(app, [
+        UserModule
     ]);
     ```
 

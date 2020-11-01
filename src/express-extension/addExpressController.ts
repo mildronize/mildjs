@@ -8,7 +8,7 @@ import { asyncHelper, injectDependencies, createProviders } from './utils';
 
 export function addExpressController(app: express.Application, controllers: any[]) {
   // tslint:disable-next-line:no-console
-  console.log('The function: addExpressController is deprecated, please use`');
+  console.log('The function: addExpressController is deprecated, please use `useExpressServer` instead');
   // Iterate over all our controllers and register our routes
   controllers.forEach((controller) => {
     // This is our instantiated class

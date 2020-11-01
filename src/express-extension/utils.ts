@@ -23,5 +23,4 @@ export function injectDependencies(controller: any, i: any[]): any {
       return new controller(i[0], i[1], i[2], i[3]);
   }
   throw new Error('The max number of providers is 4');
-  return null;
 }
