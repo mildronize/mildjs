@@ -7,6 +7,7 @@ import { asyncHelper, injectDependencies, createProviders } from './utils';
 export function useExpressServer(app: express.Application, modules: any[]) {
   modules.forEach((_module) => {
     const module = Reflect.getMetadata('module', _module);
+    // console.log(module);
     console.log('addExpressControllerWithProviders');
     addExpressControllerWithProviders(app, module);
   });
@@ -21,8 +22,8 @@ function addExpressControllerWithProviders(app: express.Application, module: IMo
 
   controllers.forEach((controller) => {
 
-    const instance = injectDependencies(controller, providerInstances);
-    // console.log(instance.constructor);
+    const instance =  injectDependencies(controller, providerInstances)  ;
+    // console.log(instance.constructor.name);
 
     const prefix = Reflect.getMetadata('prefix', controller);
     const routes: RouteDecorator[] = Reflect.getMetadata('routes', controller);
