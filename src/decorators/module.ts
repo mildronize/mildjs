@@ -1,9 +1,6 @@
-export interface IModule {
-  controllers: any[];
-  providers: any[];
-}
+import  { ModuleMetada } from './interfaces/module-metada.interface';
 
-export const Module = (injected: IModule = { controllers: [], providers: [] }): ClassDecorator => {
+export const Module = (injected: ModuleMetada = { controllers: [], providers: [] }): ClassDecorator => {
   return (target: any) => {
     Reflect.defineMetadata('module', injected, target);
   };

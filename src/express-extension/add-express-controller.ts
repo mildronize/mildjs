@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { RouteDecorator } from '../decorators/decorator.interface';
-import { IModule } from '..';
+import { RouteDecorator } from '../decorators/interfaces/decorator.interface';
+import { ModuleMetada } from '..';
 
 import { asyncHelper } from './utils';
 

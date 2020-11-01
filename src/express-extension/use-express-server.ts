@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { RouteDecorator } from '../decorators/decorator.interface';
-import { IModule } from '..';
+import { RouteDecorator } from '../decorators/interfaces/decorator.interface';
+import { ModuleMetada } from '..';
 
 import { asyncHelper, injectDependencies, createProviders } from './utils';
 
@@ -15,7 +15,7 @@ export function useExpressServer(app: express.Application, modules: any[]) {
   return true;
 }
 
-function addExpressControllerWithProviders(app: express.Application, module: IModule) {
+function addExpressControllerWithProviders(app: express.Application, module: ModuleMetada) {
   const controllers = module.controllers;
   const providerInstances = createProviders(module.providers);
 

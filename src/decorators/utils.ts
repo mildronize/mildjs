@@ -1,4 +1,4 @@
-import { RouteDecorator } from './decorator.interface';
+import { RouteDecorator } from './interfaces/decorator.interface';
 
 export function getControllerData(controller: any) {
   // The prefix saved to our controller

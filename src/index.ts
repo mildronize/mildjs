@@ -1,11 +1,6 @@
 import 'reflect-metadata';
-export * from './decorators/decorator.interface';
 
-export * from './decorators/controller';
-export * from './decorators/module';
-export * from './decorators/http-methods';
-export * from './decorators/middleware';
-export * from './decorators/utils';
+export * from './decorators';
 
 export * from './express-extension/use-express-server';
 export * from './express-extension/add-express-controller';

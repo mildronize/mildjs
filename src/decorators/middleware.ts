@@ -1,4 +1,4 @@
-import { RouteDecorator } from './decorator.interface';
+import { RouteDecorator } from './interfaces/decorator.interface';
 
 export const Middleware = (middleware: any): MethodDecorator => {
   // `target` equals our class, `propertyKey` equals our decorated method name

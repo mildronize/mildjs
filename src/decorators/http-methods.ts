@@ -1,4 +1,4 @@
-import { RouteDecorator } from './decorator.interface';
+import { RouteDecorator } from './interfaces/decorator.interface';
 
 export const Get = (path: string): MethodDecorator => httpMethodDecorator('get', { path });
 export const Post = (path: string): MethodDecorator => httpMethodDecorator('post', { path });
