@@ -25,6 +25,9 @@ npm install route-controller reflect-metadata
 
 ## Usage
 
+```
+Note: for version 0.0.14
+```
 
 1. setup the controller
 
