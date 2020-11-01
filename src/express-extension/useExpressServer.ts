@@ -1,20 +1,30 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { RouteDecorator } from './decorator.interface';
+import { RouteDecorator } from '../decorators/decorator.interface';
+import { IModule } from '..';
 
-const asyncHelper = (fn: any) => (req: Request, res: Response, next: NextFunction) => {
-  fn(req, res, next).catch(next);
-};
+import { asyncHelper, injectDependencies, createProviders } from './utils';
 
-export function addExpressController(app: express.Application, controllers: any[]) {
-  // Iterate over all our controllers and register our routes
+export function useExpressServer(app: express.Application, modules: any[]) {
+  modules.forEach((_module) => {
+    const module = Reflect.getMetadata('module', _module);
+    console.log('addExpressControllerWithProviders');
+    addExpressControllerWithProviders(app, module);
+  });
+
+  return true;
+}
+
+function addExpressControllerWithProviders(app: express.Application, module: IModule) {
+
+  const controllers = module.controllers;
+  const providerInstances = createProviders(module.providers);
+
   controllers.forEach((controller) => {
-    // This is our instantiated class
-    const instance = new controller();
-    // if (logger) logger.info(`Added controller: ${instance.constructor.name}`);
 
-    // The prefix saved to our controller
+    const instance = injectDependencies(controller, providerInstances);
+    // console.log(instance.constructor);
+
     const prefix = Reflect.getMetadata('prefix', controller);
-    // Our `routes` array containing all our routes for this controller
     const routes: RouteDecorator[] = Reflect.getMetadata('routes', controller);
 
     const callInstance = (route: RouteDecorator) =>
@@ -22,7 +32,6 @@ export function addExpressController(app: express.Application, controllers: any[
         await instance[route.methodName](req, res, next);
       });
 
-    // Iterate over all routes and register them to our express application
     routes.forEach((route: RouteDecorator) => {
       if (route.hasOwnProperty('middleware') && route.middleware !== undefined) {
         // Call the middleware
@@ -30,8 +39,10 @@ export function addExpressController(app: express.Application, controllers: any[
       } else {
         app[route.requestMethod](prefix + route.path, callInstance(route));
       }
-      // if (logger) logger.info(`Mapped route: [${route.requestMethod}] '${prefix}${route.path}'`);
+     
     });
+
   });
-  return true;
+
+
 }
