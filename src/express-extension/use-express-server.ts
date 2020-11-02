@@ -21,23 +21,21 @@ export function useExpressServer(app: express.Application, modules: any[], optio
 }
 
 function addModuleToExpressApp(app: express.Application, module: ModuleMetada, option?: Option) {
-
   const store = getMetadataArgsStore();
   const controllers = module.controllers;
   const providers = module.providers || [];
 
-  // From TypeDi 
+  // From TypeDi
   const getContainer = option?.container || undefined;
 
-  let providerInstances : any;
-  
-  console.log(`option?.container  ${ option?.container }`);
-  console.log(`getContainer ${getContainer}`);
-  if(getContainer !== undefined) providerInstances = createProviders(providers, getContainer);
-  console.log(`providerInstances ${providerInstances}`);
+  let providerInstances: any;
+
+  // console.log(`option?.container  ${option?.container}`);
+  // console.log(`getContainer ${getContainer}`);
+  if (getContainer !== undefined) providerInstances = createProviders(providers, getContainer);
+  // console.log(`providerInstances ${providerInstances}`);
 
   controllers.forEach((controller) => {
-
     const instance = injectDependencies(controller, providerInstances);
 
     const combinedRoutes = combineRouteWithMiddleware(controller, store.routes, store.middlewares);
@@ -49,13 +47,11 @@ function addModuleToExpressApp(app: express.Application, module: ModuleMetada, o
         const requestMethod: RequestMethod = route.requestMethod;
 
         if (route.middlewares.length > 0) {
-
           const middleware = combineMiddlewares(route.middlewares);
 
           app[requestMethod](prefix + route.path, middleware, callInstance(instance, route));
         } else {
           app[requestMethod](prefix + route.path, callInstance(instance, route));
-
         }
       }
     });
@@ -89,12 +85,11 @@ export function createProviders(providers: any[], container: any) {
 }
 
 export function injectDependencies(controller: any, providerInstances: any[]): any {
-  
-  if(!providerInstances) {
+  if (!providerInstances) {
     const controllerInstance = new controller();
-    
+
     // tslint:disable-next-line:no-console
-    console.log(`WARN: Create instance of '${controllerInstance.constructor.name}' without inject the any service.`); 
+    console.log(`WARN: Create instance of '${controllerInstance.constructor.name}' without inject the any service.`);
     /*
     If you would like to use the service, you should passing the 'Container' from 'typedi'.
     This library is designed for TypeORM & typedi only.`); 

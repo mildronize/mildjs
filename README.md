@@ -4,27 +4,42 @@
 
 > **Remark!** Don't ready to use for production yet.
 
-**A simple Express decorator for router**.
-The idea is just merge the controller and route files together. So, we can just only the controller and add controller. 
+**A Simple Express Router decorator**.
+
+Aim: To separate codes into many pieces for testing purposes.
+
+The concept is `Module` contains:
+
+- `Controller`: Combine the controller, middleware and routing
+- `Service`: To connect with other service like Database.
 
 ** Alternatively: [routing-controllers](https://github.com/typestack/routing-controllers)
 
 ## Features
 
 - Express Router decorators: `Get`, `Post`, `Put`, `Delete`, `Use`, `Controller`
+- Express Middleware
   - `Use` for Express Middleware
+  - Support multiple middleware, e.g. `@Use(validateAuth, validateRole)` (`validateAuth`, `validateRole` is the custom middlewares)
 - Basic `HttpException`
-- Basic middleware for validating the request, `validateType`
+- Basic middleware for validating the request, `validateType` using `class-validator`
 - built-in [http-status-codes](https://github.com/prettymuchbryce/http-status-codes)
 
 
 ## Installation
 
-1. Install the module
+Install the module
 
 ```bash
-npm install route-controller reflect-metadata
+$ npm install route-controller reflect-metadata
 ```
+
+If you want to use with TypeORM, please install
+
+```bash
+$ npm install typeorm typedi typeorm-typedi-extensions
+```
+
 
 ## Usage
 
@@ -35,6 +50,7 @@ Note: for version 1.0.0 and above
 1. setup the controller
 
     ```typescript
+    // filename: users.controller.ts
     import { Controller, Get } from 'route-controller';
 
     @Controller('/users')
@@ -51,12 +67,12 @@ Note: for version 1.0.0 and above
 2. Setup the module
 
     ```typescript
+    // filename: users.module.ts
     import { Module } from 'route-controller';
     import { UsersController } from './users.controller';
 
     @Module({
-        controllers: [UsersController],
-        providers: []
+        controllers: [UsersController]
     })
     export class UserModule { }
     ```
@@ -66,6 +82,7 @@ Note: for version 1.0.0 and above
 3. Inject the module to Express using `useExpressServer`
 
     ```typescript
+    // filename: main.ts
     import express from 'express';
     import { UserModule } from './users.module';
 
@@ -73,6 +90,110 @@ Note: for version 1.0.0 and above
     useExpressServer(app, [
         UserModule
     ]);
+    ```
+
+## The example usage with TypeORM & TypeDI
+
+1. setup the entity & service
+
+    ```typescript
+    // filename: users.entity.ts
+    import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
+    @Entity()
+    export class User {
+        @PrimaryGeneratedColumn()
+        id: number;
+
+        @Column()
+        name: string;
+    }
+    ```
+
+    ```typescript
+    // filename: users.service.ts
+    import { Service } from 'typedi';
+    import { InjectRepository } from 'typeorm-typedi-extensions';
+    import { User} from './users.entity';
+
+    @Service()
+    export class UsersService {
+
+        @InjectRepository(User)
+        private repository: Repository<User>;
+
+        public findAll(): Promise<User[]> {
+            const users = this.repository.find();
+            return users;
+        }
+    }
+    ```
+
+
+
+2. setup the controller, (Note: `useExpressServer` will inject the service in `userService` property, respectively, If you have 2 services, please make sure that the order in the providers (@Module) is setting is same order with the controller constructor. )
+
+    ```typescript
+    // filename: users.controller.ts
+    import { Controller, Get } from 'route-controller';
+    import { UsersService } from './users.service';
+    import { User} from 'users.entity';
+
+    @Controller('/users')
+    export class UsersController {
+
+        constructor(public userService: UsersService) {}
+
+        @Get('/')
+        public async getUsers(req: any, res: any, next: any) {
+            const data: User[] = await this.userService.findAll();
+            res.status(200).json({ data });
+        }
+    }
+    ```
+
+3. Setup the module
+
+    ```typescript
+    // filename: users.module.ts
+    import { Module } from 'route-controller';
+    import { UsersController } from './users.controller';
+    import { UsersService } from './users.service';
+
+    @Module({
+        controllers: [ UsersController ],
+        providers: [ UsersService ]
+    })
+    export class UserModule { }
+    ```
+
+4. setup the express app & typeORM connect with the DB
+
+    ```typescript
+    // main.ts
+    import express from 'express';
+    import { UserModule } from './users.module';
+    import { Container } from 'typedi';
+    import { createConnection, useContainer } from 'typeorm';
+
+    function initDatabase(){
+        useContainer(Container);
+        createConnection({
+            // TypeORM config....
+        });
+    }
+
+    async function runServer(){
+        // Make sure the database should be connected before inject the providers
+        await initDatabase();
+        app = express();
+        useExpressServer(app, [ UserModule ], {
+            // inject the container from `createConnection`
+            container: Container;
+        });
+    }
+
+    runServer();
     ```
 
 
