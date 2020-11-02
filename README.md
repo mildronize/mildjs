@@ -110,6 +110,8 @@ Note: for version 1.0.0 and above
     }
     ```
 
+    The `repository` will be injected by service of `typedi`
+
     ```typescript
     // filename: users.service.ts
     import { Service } from 'typedi';
