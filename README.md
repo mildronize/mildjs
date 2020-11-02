@@ -245,3 +245,7 @@ Note: for version 1.0.0 and above
         res.send(error.message);
     })
     ```
+
+## License
+
+MIT
