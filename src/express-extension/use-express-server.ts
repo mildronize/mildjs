@@ -15,7 +15,7 @@ const callInstance = (instance: any, route: RouteMetadataArgs) =>
 export function addExpressV2(app: express.Application, module: ModuleMetada) {
   const store = getMetadataArgsStore();
   const controllers = module.controllers;
-  const providerInstances = createProviders(module.providers);
+  const providerInstances = createProviders(module.providers || []);
 
   controllers.forEach((controller) => {
     // const instance = new controller();

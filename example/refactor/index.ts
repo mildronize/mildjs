@@ -34,12 +34,11 @@ class YourController{
 }
 
 @Module({
-    controllers: [MyController],
-    providers:[]
+    controllers: [MyController]
 })
 class MyModule { }
 
-
+console.log('Hey');
 
 useExpressServer(express(), [MyModule ]);
 
