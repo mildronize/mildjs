@@ -1,4 +1,4 @@
-import { Middleware } from 'decorators/middleware';
+// import { Middleware } from 'decorators/middleware';
 import { NextFunction, Response, Request } from 'express';
 
 export type IMiddleware = (req: Request, res: Response, next: NextFunction) => void;

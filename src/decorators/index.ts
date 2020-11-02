@@ -6,3 +6,4 @@ export * from './module';
 export * from './http-methods';
 export * from './middleware';
 export * from './utils';
+export * from './metadata-args-store';

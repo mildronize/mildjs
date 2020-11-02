@@ -4,13 +4,65 @@ import { IMiddleware, RouteMetadata } from '../decorators/interfaces/route-metad
 import { ModuleMetada } from '..';
 
 import { asyncHelper, injectDependencies, createProviders } from './utils';
+import { getMetadataArgsStore, RouteMetadataArgs, combineRouteWithMiddleware } from '..';
+import { MiddlewareMetadataArgs, RequestMethod } from '../decorators';
+
+const callInstance = (instance: any, route: RouteMetadataArgs) =>
+  asyncHelper(async (req: Request, res: Response, next: NextFunction) => {
+    await instance[route.methodName](req, res, next);
+  });
+
+export function addExpressV2(app: express.Application, module: ModuleMetada) {
+  const store = getMetadataArgsStore();
+  const controllers = module.controllers;
+  const providerInstances = createProviders(module.providers);
+
+  controllers.forEach((controller) => {
+    // const instance = new controller();
+    const instance = injectDependencies(controller, providerInstances);
+
+    const combinedRoutes = combineRouteWithMiddleware(controller, store.routes, store.middlewares);
+
+    // console.log('combinedRoutes');
+    // console.log(combinedRoutes);
+
+    const getPrefix = (combinedRoutes: any[]) => {
+      for (let i in combinedRoutes) if (combinedRoutes[i].isClass) return combinedRoutes[i].path;
+      return '';
+    };
+
+    const prefix = getPrefix(combinedRoutes);
+
+    // console.log(prefix);
+
+    combinedRoutes.forEach((route: any) => {
+      if (!route.isClass) {
+        const requestMethod: RequestMethod = route.requestMethod;
+
+        // console.log(route);
+        if (route.middlewares.length > 0) {
+          // Call the middleware
+          const middleware = combineMiddlewares(route.middlewares);
+          // console.log(route.middlewares[0]);
+          // console.log(
+          //   `Mapped route: [${route.requestMethod}] '${prefix}${route.path}' use middleware : ${route.middlewares}`,
+          // );
+
+          app[requestMethod](prefix + route.path, middleware, callInstance(instance, route));
+        } else {
+          app[requestMethod](prefix + route.path, callInstance(instance, route));
+          // console.log(`Mapped route: [${route.requestMethod}] '${prefix}${route.path}'`);
+        }
+      }
+    });
+  });
+}
 
 export function useExpressServer(app: express.Application, modules: any[]) {
   modules.forEach((_module) => {
     const module = Reflect.getMetadata('module', _module);
-    // console.log(module);
-    // console.log('addExpressControllerWithProviders');
-    addExpressControllerWithProviders(app, module);
+    addExpressV2(app, module);
+    // addExpressControllerWithProviders(app, module);
   });
 
   return true;

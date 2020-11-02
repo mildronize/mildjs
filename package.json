@@ -12,16 +12,16 @@
     "npm": ">=5"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "dev": "chokidar \"src/**/*.ts\" -c \"npm link\"",
     "format": "prettier --write \"src/**/*.ts\" ",
     "lint": "tslint -p tsconfig.json",
     "test": "jest --config jestconfig.json",
     "test:watch": "jest --config jestconfig.json --watch",
     "prepare": "run-s build",
-    "prepublish": "run-s format lint test build",
+    "prepublishOnly": "run-s format lint test build",
     "publish:patch": "npm version patch --force && npm publish",
-    "example": "chokidar \"**/*.ts\" -c  \" ts-node example/addExpressModule/index.ts\""
+    "example": "chokidar \"**/*.ts\" -c  \" ts-node example/refactor/index.ts\""
   },
   "peerDependencies": {
     "reflect-metadata": ">= 0.1.0 < 0.2.0",
