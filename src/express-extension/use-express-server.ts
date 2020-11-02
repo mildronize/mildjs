@@ -3,70 +3,69 @@ import connect from 'connect';
 import { IMiddleware, RouteMetadata } from '../decorators/interfaces/route-metadata.interface';
 import { ModuleMetada } from '..';
 
-import { asyncHelper, injectDependencies, createProviders } from './utils';
 import { getMetadataArgsStore, RouteMetadataArgs, combineRouteWithMiddleware } from '..';
 import { MiddlewareMetadataArgs, RequestMethod } from '../decorators';
+import { Container } from 'typedi';
 
-const callInstance = (instance: any, route: RouteMetadataArgs) =>
-  asyncHelper(async (req: Request, res: Response, next: NextFunction) => {
-    await instance[route.methodName](req, res, next);
+interface Option {
+  container?: typeof Container;
+}
+
+export function useExpressServer(app: express.Application, modules: any[], option?: Option) {
+  modules.forEach((_module) => {
+    const module = Reflect.getMetadata('module', _module);
+    addModuleToExpressApp(app, module, option);
   });
 
-export function addExpressV2(app: express.Application, module: ModuleMetada) {
+  return true;
+}
+
+function addModuleToExpressApp(app: express.Application, module: ModuleMetada, option?: Option) {
+
   const store = getMetadataArgsStore();
   const controllers = module.controllers;
-  const providerInstances = createProviders(module.providers || []);
+  const providers = module.providers || [];
+
+  // From TypeDi 
+  const getContainer = option?.container || undefined;
+
+  let providerInstances : any;
+  
+  console.log(`option?.container  ${ option?.container }`);
+  console.log(`getContainer ${getContainer}`);
+  if(getContainer !== undefined) providerInstances = createProviders(providers, getContainer);
+  console.log(`providerInstances ${providerInstances}`);
 
   controllers.forEach((controller) => {
-    // const instance = new controller();
+
     const instance = injectDependencies(controller, providerInstances);
 
     const combinedRoutes = combineRouteWithMiddleware(controller, store.routes, store.middlewares);
 
-    // console.log('combinedRoutes');
-    // console.log(combinedRoutes);
-
-    const getPrefix = (routes: any[]) => {
-      for (const i in routes) if (routes[i].isClass) return routes[i].path;
-      return '';
-    };
-
     const prefix = getPrefix(combinedRoutes);
-
-    // console.log(prefix);
 
     combinedRoutes.forEach((route: any) => {
       if (!route.isClass) {
         const requestMethod: RequestMethod = route.requestMethod;
 
-        // console.log(route);
         if (route.middlewares.length > 0) {
-          // Call the middleware
+
           const middleware = combineMiddlewares(route.middlewares);
-          // console.log(route.middlewares[0]);
-          // console.log(
-          //   `Mapped route: [${route.requestMethod}] '${prefix}${route.path}' use middleware : ${route.middlewares}`,
-          // );
 
           app[requestMethod](prefix + route.path, middleware, callInstance(instance, route));
         } else {
           app[requestMethod](prefix + route.path, callInstance(instance, route));
-          // console.log(`Mapped route: [${route.requestMethod}] '${prefix}${route.path}'`);
+
         }
       }
     });
   });
 }
 
-export function useExpressServer(app: express.Application, modules: any[]) {
-  modules.forEach((_module) => {
-    const module = Reflect.getMetadata('module', _module);
-    addExpressV2(app, module);
-    // addExpressControllerWithProviders(app, module);
+const callInstance = (instance: any, route: RouteMetadataArgs) =>
+  asyncHelper(async (req: Request, res: Response, next: NextFunction) => {
+    await instance[route.methodName](req, res, next);
   });
-
-  return true;
-}
 
 function combineMiddlewares(middlewares: IMiddleware[]) {
   const chain = connect();
@@ -76,36 +75,33 @@ function combineMiddlewares(middlewares: IMiddleware[]) {
   return chain;
 }
 
-// function addExpressControllerWithProviders(app: express.Application, module: ModuleMetada) {
-//   const controllers = module.controllers;
-//   const providerInstances = createProviders(module.providers);
+const getPrefix = (routes: any[]) => {
+  for (const i in routes) if (routes[i].isClass) return routes[i].path;
+  return '';
+};
 
-//   // console.log(providerInstances[0]);
+const asyncHelper = (fn: any) => (req: Request, res: Response, next: NextFunction) => {
+  fn(req, res, next).catch(next);
+};
 
-//   controllers.forEach((controller) => {
-//     const instance = injectDependencies(controller, providerInstances);
-//     // console.log(instance.constructor.name);
+export function createProviders(providers: any[], container: any) {
+  return providers.map((provider) => container.get(provider));
+}
 
-//     const prefix = Reflect.getMetadata('prefix', controller);
-//     const routes: RouteMetadata[] = Reflect.getMetadata('routes', controller);
+export function injectDependencies(controller: any, providerInstances: any[]): any {
+  
+  if(!providerInstances) {
+    const controllerInstance = new controller();
+    
+    // tslint:disable-next-line:no-console
+    console.log(`WARN: Create instance of '${controllerInstance.constructor.name}' without inject the any service.`); 
+    /*
+    If you would like to use the service, you should passing the 'Container' from 'typedi'.
+    This library is designed for TypeORM & typedi only.`); 
+    */
 
-//     const callInstance = (route: RouteMetadata) =>
-//       asyncHelper(async (req: Request, res: Response, next: NextFunction) => {
-//         await instance[route.methodName](req, res, next);
-//       });
+    return controllerInstance;
+  }
 
-//     routes.forEach((route: RouteMetadata) => {
-//       // console.log(route);
-//       if (route.middlewares.length > 0) {
-//         // Call the middleware
-//         const middleware = combineMiddlewares(route.middlewares);
-//         // console.log(route.middlewares[0]);
-//         // console.log(`Mapped route: [${route.requestMethod}] '${prefix}${route.path}' use middleware 0: ${route.middlewares[0]}`);
-//         app[route.requestMethod](prefix + route.path, middleware, callInstance(route));
-//       } else {
-//         app[route.requestMethod](prefix + route.path, callInstance(route));
-//         // console.log(`Mapped route: [${route.requestMethod}] '${prefix}${route.path}'`);
-//       }
-//     });
-//   });
-// }
+  return new controller(...providerInstances);
+}

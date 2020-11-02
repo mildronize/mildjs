@@ -34,13 +34,14 @@ class YourController{
 }
 
 @Module({
-    controllers: [MyController]
+    controllers: [MyController],
+    providers: []
 })
 class MyModule { }
 
 console.log('Hey');
 
-useExpressServer(express(), [MyModule ]);
+useExpressServer(express(), [MyModule]);
 
 
 

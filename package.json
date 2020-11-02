@@ -26,8 +26,7 @@
   },
   "peerDependencies": {
     "reflect-metadata": ">= 0.1.0 < 0.2.0",
-    "express": ">= 4.0.0 < 5.0.0",
-    "typeorm": ">= 0.2.28 < 0.3.0"
+    "express": ">= 4.0.0 < 5.0.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.8",
@@ -58,9 +57,6 @@
     "express": "~4.17.1",
     "http-status-codes": "^2.1.4",
     "reflect-metadata": "^0.1.13",
-    "typedi": "^0.8.0",
-    "typeorm": "^0.2.28",
-    "typeorm-di": "0.0.4",
-    "typeorm-typedi-extensions": "^0.2.3"
+    "typedi": "^0.8.0"
   }
 }

@@ -4,8 +4,6 @@ export * from './decorators';
 
 export * from './express-extension/use-express-server';
 export * from './express-extension/combine-route-with-middleware';
-export * from './express-extension/add-express-controller';
-
 export * from './exceptions/http-exception';
 
 export * from './middlewares';
@@ -16,5 +14,3 @@ export * from './utils';
 export * from 'http-status-codes';
 
 // thanks router decorator from https://nehalist.io/routing-with-typescript-decorators/
-
-export * from 'typeorm-di';
