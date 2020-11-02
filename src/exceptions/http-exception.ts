@@ -8,7 +8,7 @@ export class HttpException extends Error {
     this.message = message;
   }
 
-  toJSON() {
+  public toJSON() {
     return {
       code: this.code,
       message: this.message,

@@ -7,3 +7,4 @@ test('Setup the empty module', () => {
     const result = useExpressServer(app, []);
     expect(result).toBe(true);
 });
+
