@@ -9,7 +9,8 @@ The idea is just merge the controller and route files together. So, we can just 
 
 ## Features
 
-- Express Router decorators: `Get`, `Post`, `Put`, `Delete`, `Middleware`, `Controller`
+- Express Router decorators: `Get`, `Post`, `Put`, `Delete`, `Use`, `Controller`
+  - `Use` for Express Middleware
 - Basic `HttpException`
 - Basic middleware for validating the request, `validateType`
 - built-in [http-status-codes](https://github.com/prettymuchbryce/http-status-codes)
@@ -26,7 +27,7 @@ npm install route-controller reflect-metadata
 ## Usage
 
 ```
-Note: for version 0.0.14
+Note: for version 1.0.0 and above
 ```
 
 1. setup the controller
