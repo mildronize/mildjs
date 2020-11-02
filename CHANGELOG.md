@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 1.1.0
+
+- Remove `typeorm` and `typeorm-di` dependencies
+- `useExpressServer` require to pass `Container` from `typedi`  for injecting the service.
+
 ## Version 1.0.0
 
 ### Features
