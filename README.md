@@ -1,6 +1,8 @@
 # Route Controller
 
-[![Build Status](https://travis-ci.org/mildronize/route-controller.svg?branch=main)](https://travis-ci.org/mildronize/route-controller)
+[![Build Status](https://travis-ci.org/mildronize/route-controller.svg?branch=main)](https://travis-ci.org/mildronize/route-controller)  [![codecov](https://codecov.io/gh/mildronize/route-controller/branch/main/graph/badge.svg?token=YFCN3ZQEEI)](https://codecov.io/gh/mildronize/route-controller) [![npm version](https://badge.fury.io/js/route-controller.svg)](https://badge.fury.io/js/route-controller)
+
+> **Remark!** Don't ready to use for production yet.
 
 **A simple Express decorator for router**.
 The idea is just merge the controller and route files together. So, we can just only the controller and add controller. 
