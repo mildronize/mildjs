@@ -3,9 +3,6 @@ import { Controller, getMetadataArgsStore, Use } from '../../src/';
 import express from 'express';
 import { Module } from '../../src';
 
-console.log('\n\n\n\n--------------------------------------------------\n\n\n\n');
-console.log('hey');
-
 const authMid = (req:any, res:any, next:any) => {};
 const userMid = (req:any, res:any, next:any) => {};
 const roleMid = (req:any, res:any, next:any) => {};

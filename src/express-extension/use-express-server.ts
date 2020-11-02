@@ -26,8 +26,8 @@ export function addExpressV2(app: express.Application, module: ModuleMetada) {
     // console.log('combinedRoutes');
     // console.log(combinedRoutes);
 
-    const getPrefix = (combinedRoutes: any[]) => {
-      for (let i in combinedRoutes) if (combinedRoutes[i].isClass) return combinedRoutes[i].path;
+    const getPrefix = (routes: any[]) => {
+      for (const i in routes) if (routes[i].isClass) return routes[i].path;
       return '';
     };
 
@@ -76,36 +76,36 @@ function combineMiddlewares(middlewares: IMiddleware[]) {
   return chain;
 }
 
-function addExpressControllerWithProviders(app: express.Application, module: ModuleMetada) {
-  const controllers = module.controllers;
-  const providerInstances = createProviders(module.providers);
+// function addExpressControllerWithProviders(app: express.Application, module: ModuleMetada) {
+//   const controllers = module.controllers;
+//   const providerInstances = createProviders(module.providers);
 
-  // console.log(providerInstances[0]);
+//   // console.log(providerInstances[0]);
 
-  controllers.forEach((controller) => {
-    const instance = injectDependencies(controller, providerInstances);
-    // console.log(instance.constructor.name);
+//   controllers.forEach((controller) => {
+//     const instance = injectDependencies(controller, providerInstances);
+//     // console.log(instance.constructor.name);
 
-    const prefix = Reflect.getMetadata('prefix', controller);
-    const routes: RouteMetadata[] = Reflect.getMetadata('routes', controller);
+//     const prefix = Reflect.getMetadata('prefix', controller);
+//     const routes: RouteMetadata[] = Reflect.getMetadata('routes', controller);
 
-    const callInstance = (route: RouteMetadata) =>
-      asyncHelper(async (req: Request, res: Response, next: NextFunction) => {
-        await instance[route.methodName](req, res, next);
-      });
+//     const callInstance = (route: RouteMetadata) =>
+//       asyncHelper(async (req: Request, res: Response, next: NextFunction) => {
+//         await instance[route.methodName](req, res, next);
+//       });
 
-    routes.forEach((route: RouteMetadata) => {
-      // console.log(route);
-      if (route.middlewares.length > 0) {
-        // Call the middleware
-        const middleware = combineMiddlewares(route.middlewares);
-        // console.log(route.middlewares[0]);
-        // console.log(`Mapped route: [${route.requestMethod}] '${prefix}${route.path}' use middleware 0: ${route.middlewares[0]}`);
-        app[route.requestMethod](prefix + route.path, middleware, callInstance(route));
-      } else {
-        app[route.requestMethod](prefix + route.path, callInstance(route));
-        // console.log(`Mapped route: [${route.requestMethod}] '${prefix}${route.path}'`);
-      }
-    });
-  });
-}
+//     routes.forEach((route: RouteMetadata) => {
+//       // console.log(route);
+//       if (route.middlewares.length > 0) {
+//         // Call the middleware
+//         const middleware = combineMiddlewares(route.middlewares);
+//         // console.log(route.middlewares[0]);
+//         // console.log(`Mapped route: [${route.requestMethod}] '${prefix}${route.path}' use middleware 0: ${route.middlewares[0]}`);
+//         app[route.requestMethod](prefix + route.path, middleware, callInstance(route));
+//       } else {
+//         app[route.requestMethod](prefix + route.path, callInstance(route));
+//         // console.log(`Mapped route: [${route.requestMethod}] '${prefix}${route.path}'`);
+//       }
+//     });
+//   });
+// }

@@ -7,7 +7,7 @@ export const Put = (path?: string): Function => httpMethodDecorator('put', path)
 export const Delete = (path?: string): Function => httpMethodDecorator('delete', path);
 
 export function httpMethodDecorator(requestMethod: RouteMetadata['requestMethod'], path?: string): Function {
-  return function (objectOrFunction: Object | Function, methodName?: string) {
+  return (objectOrFunction: Object | Function, methodName?: string) => {
     getMetadataArgsStore().routes.push({
       target: methodName ? objectOrFunction.constructor : (objectOrFunction as Function),
       path: path ? path : '',

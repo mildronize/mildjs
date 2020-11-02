@@ -4,9 +4,11 @@ import {UserService} from './users.service';
 @Controller('/users')
 export class UsersController {
 
-    constructor(private UserService: UserService){
+    constructor(private userService: UserService){
+        // tslint:disable-next-line:no-console
         console.log(`UsersController: ${this.constructor.name}`);
-        console.log(UserService.getData());
+        // tslint:disable-next-line:no-console
+        console.log(userService.getData());
     }
 
 }

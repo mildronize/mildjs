@@ -15,7 +15,7 @@
     "build": "tsc -p tsconfig.build.json",
     "dev": "chokidar \"src/**/*.ts\" -c \"npm link\"",
     "format": "prettier --write \"src/**/*.ts\" ",
-    "lint": "tslint -p tsconfig.json",
+    "lint": "tslint -p tsconfig.build.json",
     "test": "jest --config jestconfig.json",
     "test:watch": "jest --config jestconfig.json --watch",
     "prepare": "run-s build",

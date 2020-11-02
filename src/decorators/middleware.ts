@@ -13,9 +13,10 @@ export function getMetadataArgsStore(): MetadataArgsStore {
 }
 
 export function Use(
+  // tslint:disable-next-line:array-type
   ...middlewares: Array<Function | ((request: any, response: any, next: Function) => any)>
 ): Function {
-  return function (objectOrFunction: Object | Function, methodName?: string) {
+  return (objectOrFunction: Object | Function, methodName?: string) => {
     middlewares.forEach((middleware) => {
       getMetadataArgsStore().middlewares.push({
         target: methodName ? objectOrFunction.constructor : (objectOrFunction as Function),

@@ -16,10 +16,10 @@ export function combineRouteWithMiddleware(
   routes: RouteMetadataArgs[],
   middlewares: MiddlewareMetadataArgs[],
 ) {
-  let exportedRoutes: CombineRoute[] = [];
+  const exportedRoutes: CombineRoute[] = [];
   // For target Class, Add all route which is matching the target controller, then provide middleware for the routes.
   routes.forEach((route: RouteMetadataArgs) => {
-    if (controller == route.target) {
+    if (controller === route.target) {
       exportedRoutes.push({
         ...route,
         isClass: isClassRoute(route),
@@ -39,7 +39,7 @@ export function combineRouteWithMiddleware(
 
   // add middlewares to the class controller (classRoute)
   middlewares.forEach((middleware) => {
-    if (classRoute.target == middleware.target && isClassMiddleware(middleware)) {
+    if (classRoute.target === middleware.target && isClassMiddleware(middleware)) {
       classRoute.middlewares.push(middleware.middleware);
     }
   });
@@ -56,9 +56,9 @@ export function combineRouteWithMiddleware(
 
   // apply middleware of the method to the method.
   middlewares.forEach((middleware) => {
-    if (!isClassMiddleware(middleware) && controller == middleware.target) {
+    if (!isClassMiddleware(middleware) && controller === middleware.target) {
       exportedRoutes.forEach((route) => {
-        if (!route.isClass && route.methodName == middleware.methodName) {
+        if (!route.isClass && route.methodName === middleware.methodName) {
           route.middlewares.push(middleware.middleware);
         }
       });

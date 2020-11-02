@@ -1,7 +1,7 @@
 // This will use to call app.get / app.post ..... of express
 export type RequestMethod = 'get' | 'post' | 'delete' | 'options' | 'put';
 
-export interface ControllerMetadataArgs {}
+// export interface ControllerMetadataArgs {}
 
 export interface MiddlewareMetadataArgs {
   target: Function;
@@ -27,7 +27,7 @@ export class MetadataArgsStore {
    *
    * Registered controller metadata args.
    */
-  controllers: ControllerMetadataArgs[] = [];
+  // controllers: ControllerMetadataArgs[] = [];
 
   /**
    *
