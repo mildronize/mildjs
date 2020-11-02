@@ -1,9 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 import connect from 'connect';
-import { IMiddleware, RouteMetadata } from '../decorators/interfaces/route-metadata.interface';
-import { ModuleMetada } from '..';
-
-import { getMetadataArgsStore, RouteMetadataArgs, combineRouteWithMiddleware } from '..';
+import { ModuleMetadata } from '../decorators/interfaces/module-metadata.interface';
+import { getMetadataArgsStore } from '../decorators/metadata';
+import { RouteMetadataArgs, combineRouteWithMiddleware } from '..';
 import { MiddlewareMetadataArgs, RequestMethod } from '../decorators';
 import { Container } from 'typedi';
 
@@ -20,7 +19,7 @@ export function useExpressServer(app: express.Application, modules: any[], optio
   return true;
 }
 
-function addModuleToExpressApp(app: express.Application, module: ModuleMetada, option?: Option) {
+function addModuleToExpressApp(app: express.Application, module: ModuleMetadata, option?: Option) {
   const store = getMetadataArgsStore();
   const controllers = module.controllers;
   const providers = module.providers || [];
@@ -63,7 +62,7 @@ const callInstance = (instance: any, route: RouteMetadataArgs) =>
     await instance[route.methodName](req, res, next);
   });
 
-function combineMiddlewares(middlewares: IMiddleware[]) {
+function combineMiddlewares(middlewares: any[]) {
   const chain = connect();
   middlewares.forEach((middleware) => {
     chain.use(middleware);

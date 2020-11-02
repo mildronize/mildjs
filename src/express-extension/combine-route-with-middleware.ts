@@ -1,4 +1,5 @@
-import { getMetadataArgsStore, RouteMetadataArgs } from '..';
+import { getMetadataArgsStore } from '../decorators/metadata';
+import { RouteMetadataArgs } from '../decorators/interfaces/metadata-args-store';
 import { MiddlewareMetadataArgs, RequestMethod } from '../decorators';
 
 export interface CombineRoute {

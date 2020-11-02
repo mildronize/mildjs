@@ -10,5 +10,8 @@
         "jsx",
         "json",
         "node"
-    ]
+    ],
+    "collectCoverageFrom": [
+        "src/**/*.{ts,js}"
+      ]
 }

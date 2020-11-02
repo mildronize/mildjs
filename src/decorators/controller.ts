@@ -1,4 +1,4 @@
-import { getMetadataArgsStore } from '../';
+import { getMetadataArgsStore } from '../decorators/metadata';
 
 export const Controller = (prefix: string = ''): ClassDecorator => {
   return (target: any) => {
@@ -7,12 +7,5 @@ export const Controller = (prefix: string = ''): ClassDecorator => {
       path: prefix ? prefix : '',
       methodName: '',
     });
-
-    // Reflect.defineMetadata('prefix', prefix, target);
-
-    // // Since routes are set by our methods this should almost never be true (except the controller has no methods)
-    // if (!Reflect.hasMetadata('routes', target)) {
-    //   Reflect.defineMetadata('routes', [], target);
-    // }
   };
 };

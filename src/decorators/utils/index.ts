@@ -1,4 +1,4 @@
-import { RouteMetadata } from './interfaces/route-metadata.interface';
+import { RouteMetadata } from '../interfaces/route-metadata.interface';
 
 export function getControllerData(controller: any) {
   // The prefix saved to our controller
