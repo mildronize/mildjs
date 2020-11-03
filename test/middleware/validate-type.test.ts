@@ -1,31 +1,81 @@
-import {validateType} from '../../src';
+import { validateType, HttpException } from '../../src';
 import { IsEmail, IsString } from 'class-validator';
+import { mockRequest, mockResponse } from 'mock-req-res';
+import { Request, Response } from 'express';
 
 export class CreateUserDto {
-  @IsEmail()
-  public email: string;
+    @IsEmail()
+    public email: string;
 
-  @IsString()
-  public password: string;
+    @IsString()
+    public password: string;
 }
 
-test('Validate ', () => {
 
-    const req = {
-        body: {
-            email: "mild@gmail.com",
-            password: 1,
-        }
-    };
+describe('Validate Type Middleware of Request body', () => {
+    let res: Response;
+    let next: any;
 
-    const next = jest.fn();
+    beforeEach(async () => {
+        res = mockResponse();
+        next = jest.fn();
+    });
 
-    // const a = validateType(CreateUserDto) => 
-    // const f = (req:any, {}, next:any) => validateType(CreateUserDto);
 
-    // validateSchema(req, {}, next);
-    // f(req, {}, next);
+    it('Correct type', async () => {
 
-    // expect(next).toBeCalled();
+        const req = mockRequest({ 
+            body: {
+                email: "mild@email.com",
+                password: "foo",
+            }
+        });
+        await validateType(CreateUserDto)(req, res, next);
+        expect(next).toHaveBeenCalled();
+    });
+
+    it('Correct type (Empty request)', async () => {
+        const req = mockRequest();
+        await validateType(CreateUserDto)(req, res, next);
+        expect(next).toHaveBeenCalledWith(new HttpException(400, "email must be an email, password must be a string"));
+    });
+
+    it('Incorrect type', async () => {
+
+        const req = mockRequest({
+            body: {
+                email: "mild@email.com",
+                password: 123,
+            }
+        })
+
+        await validateType(CreateUserDto)(req, res, next);
+        expect(next).toHaveBeenCalledWith(new HttpException(400, "password must be a string"));
+    });
+
+    it('Correct type with skipMissingProperties = true', async () => {
+
+        const req = mockRequest({
+            body: {
+                email: "mild@email.com",
+            }
+        })
+
+        await validateType(CreateUserDto, true)(req, res, next);
+        expect(next).toHaveBeenCalled();
+    });
+
+    it('Incorrect type with skipMissingProperties = true', async () => {
+
+        const req = mockRequest({
+            body: {
+                email: 555,
+            }
+        })
+
+        await validateType(CreateUserDto, true)(req, res, next);
+        expect(next).toHaveBeenCalledWith(new HttpException(400, "email must be an email"));
+    });
+
 });
 
