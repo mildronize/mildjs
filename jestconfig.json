@@ -13,8 +13,5 @@
     ],
     "collectCoverageFrom": [
         "src/**/*.{ts,js}"
-    ],
-    "ts-jest": {
-        "tsConfigFile": "tsconfig.json"
-    }
+    ]
 }

@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import connect from 'connect';
 
 interface ObjectKeyString {
   [key: string]: any;
@@ -26,6 +27,25 @@ export function responseFormat(res: Response, opt: Option) {
   }
 
   res.status(statusCode).json(responseBody);
-  
+
   return responseBody;
 }
+
+export const isEmptyObject = (obj: object): boolean => {
+  return !Object.keys(obj).length;
+};
+
+export const assignObject = (target: any, source: any) => {
+  Object.keys(source).forEach((key) => {
+    target[key] = source[key];
+  });
+  return target;
+};
+
+export const combineMiddlewares = (...middlewares: any[]) => {
+  const chain = connect();
+  middlewares.forEach((middleware) => {
+    chain.use(middleware);
+  });
+  return chain;
+};

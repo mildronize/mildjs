@@ -1,10 +1,11 @@
 import express, { Request, Response, NextFunction } from 'express';
-import connect from 'connect';
 import { ModuleMetadata } from '../decorators/interfaces/module-metadata.interface';
 import { getMetadataArgsStore } from '../decorators/metadata';
-import { RouteMetadataArgs, combineRouteWithMiddleware } from '..';
+import { RouteMetadataArgs } from '..';
 import { MiddlewareMetadataArgs, RequestMethod } from '../decorators';
+import { combineMiddlewares } from '../utils';
 import { Container } from 'typedi';
+import { CombineRoute, combineRouteWithMiddleware } from './combine-route-with-middleware';
 
 interface Option {
   container?: typeof Container;
@@ -26,34 +27,29 @@ function addModuleToExpressApp(app: express.Application, module: ModuleMetadata,
 
   // From TypeDi
   const getContainer = option?.container || undefined;
-
-  let providerInstances: any;
-
-  // console.log(`option?.container  ${option?.container}`);
-  // console.log(`getContainer ${getContainer}`);
-  if (getContainer !== undefined) providerInstances = createProviders(providers, getContainer);
-  // console.log(`providerInstances ${providerInstances}`);
+  const providerInstances = createProviders(providers, getContainer);
 
   controllers.forEach((controller) => {
-    const instance = injectDependencies(controller, providerInstances);
-
+    const controllerInstance = injectDependencies(controller, providerInstances || []);
     const combinedRoutes = combineRouteWithMiddleware(controller, store.routes, store.middlewares);
+    addRouterToExpress(app, combinedRoutes, controllerInstance);
+  });
+}
 
-    const prefix = getPrefix(combinedRoutes);
+function addRouterToExpress(app: express.Application, combinedRoutes: CombineRoute[], controllerInstance: any) {
+  const prefix = getPrefix(combinedRoutes);
+  combinedRoutes.forEach((route: any) => {
+    if (!route.isClass) {
+      const requestMethod: RequestMethod = route.requestMethod;
+      const routePath = prefix + route.path;
 
-    combinedRoutes.forEach((route: any) => {
-      if (!route.isClass) {
-        const requestMethod: RequestMethod = route.requestMethod;
-
-        if (route.middlewares.length > 0) {
-          const middleware = combineMiddlewares(route.middlewares);
-
-          app[requestMethod](prefix + route.path, middleware, callInstance(instance, route));
-        } else {
-          app[requestMethod](prefix + route.path, callInstance(instance, route));
-        }
+      if (route.middlewares.length > 0) {
+        const middleware = combineMiddlewares(...route.middlewares);
+        app[requestMethod](routePath, middleware, callInstance(controllerInstance, route));
+      } else {
+        app[requestMethod](routePath, callInstance(controllerInstance, route));
       }
-    });
+    }
   });
 }
 
@@ -61,14 +57,6 @@ const callInstance = (instance: any, route: RouteMetadataArgs) =>
   asyncHelper(async (req: Request, res: Response, next: NextFunction) => {
     await instance[route.methodName](req, res, next);
   });
-
-function combineMiddlewares(middlewares: any[]) {
-  const chain = connect();
-  middlewares.forEach((middleware) => {
-    chain.use(middleware);
-  });
-  return chain;
-}
 
 const getPrefix = (routes: any[]) => {
   for (const i in routes) if (routes[i].isClass) return routes[i].path;
@@ -79,7 +67,17 @@ const asyncHelper = (fn: any) => (req: Request, res: Response, next: NextFunctio
   fn(req, res, next).catch(next);
 };
 
+/*
+Get the services using Container.get([Service Name]) from 'typedi'
+
+For setup the service, using @Service(), example
+
+@Service()
+class MyService{}
+*/
+
 export function createProviders(providers: any[], container: any) {
+  if (container === undefined) return undefined;
   return providers.map((provider) => container.get(provider));
 }
 
@@ -96,6 +94,5 @@ export function injectDependencies(controller: any, providerInstances: any[]): a
 
     return controllerInstance;
   }
-
   return new controller(...providerInstances);
 }

@@ -1,5 +1,5 @@
 import { Get, Post, Delete, useExpressServer } from  '../../src/';
-import { Controller, getMetadataArgsStore, Use } from '../../src/';
+import { Controller, Use } from '../../src/';
 import express from 'express';
 import { Module } from '../../src';
 

@@ -22,7 +22,7 @@
     "prepare": "run-s build",
     "prepublishOnly": "run-s format lint test build",
     "publish:patch": "npm version patch --force && npm publish",
-    "example": "chokidar \"**/*.ts\" -c  \" ts-node example/refactor/index.ts\""
+    "example": "chokidar \"**/*.ts\" -c  \" ts-node example/tester/index.ts\""
   },
   "peerDependencies": {
     "reflect-metadata": ">= 0.1.0 < 0.2.0",
@@ -40,6 +40,7 @@
     "ts-jest": "^26.4.3",
     "tslint": "^6.1.3",
     "tslint-config-prettier": "^1.18.0",
+    "typeorm": "^0.2.29",
     "typescript": "^4.0.5"
   },
   "files": [
