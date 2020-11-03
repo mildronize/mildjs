@@ -7,5 +7,4 @@ export class HttpException extends Error {
     this.code = status;
     this.message = message;
   }
-
 }
