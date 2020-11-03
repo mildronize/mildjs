@@ -11,7 +11,6 @@ class MyController {
 
 test('get method', () => {
     const routes = getMetadataArgsStore().routes;
-    console.log(routes);
     const expected = [
         { "methodName": "getUser", "path": "", "requestMethod": "get", "target": MyController },
         { "methodName": "", "path": "", "target": MyController },
