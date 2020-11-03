@@ -2,7 +2,7 @@ import { Get, Post, Delete, useExpressServer, Controller, Use, Module, RouteMeta
 import express from 'express';
 import { combineRouteWithMiddleware } from '../../src/express-extension/combine-route-with-middleware';
 import { getMetadataArgsStore } from '../../src/decorators/metadata';
-import { deepEqual } from '../utils';
+import { deepEqual } from '../helper';
 
 const authMid = (req: any, res: any, next: any) => { };
 const userMid = (req: any, res: any, next: any) => { };

@@ -26,4 +26,6 @@ export function responseFormat(res: Response, opt: Option) {
   }
 
   res.status(statusCode).json(responseBody);
+  
+  return responseBody;
 }
