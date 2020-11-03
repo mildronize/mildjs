@@ -1,8 +1,5 @@
-import { Get, Post, Delete, useExpressServer, Controller, Use, Module, RouteMetadataArgs, MiddlewareMetadataArgs } from '../../src/';
-import express from 'express';
+import { RouteMetadataArgs, MiddlewareMetadataArgs } from '../../src/';
 import { combineRouteWithMiddleware } from '../../src/express-extension/combine-route-with-middleware';
-import { getMetadataArgsStore } from '../../src/decorators/metadata';
-import { deepEqual } from '../helper';
 
 const authMid = (req: any, res: any, next: any) => { };
 const userMid = (req: any, res: any, next: any) => { };
@@ -12,7 +9,6 @@ class MyController {}
 class OtherController {}
 
 test('Test method get & 1 method', () => {
-    const app = express();
 
     const routes: RouteMetadataArgs[] = [
         { target: MyController, path: '/users', methodName: '' },
@@ -40,12 +36,11 @@ test('Test method get & 1 method', () => {
     ];
 
     const result = combineRouteWithMiddleware(MyController, routes, middlewares);
-    expect(deepEqual(result, expected)).toBe(true);
+    expect(expected).toStrictEqual(result);
 });
 
 
 test('Test method post & 1 method', () => {
-    const app = express();
 
     const routes: RouteMetadataArgs[] = [
         { target: MyController, path: '/users', methodName: '' },
@@ -73,11 +68,11 @@ test('Test method post & 1 method', () => {
     ];
 
     const result = combineRouteWithMiddleware(MyController, routes, middlewares);
-    expect(deepEqual(result, expected)).toBe(true);
+    expect(expected).toStrictEqual(result);
 });
 
 test('Test middleware at method', () => {
-    const app = express();
+
 
     const routes: RouteMetadataArgs[] = [
         { target: MyController, path: '/users', methodName: '' },
@@ -107,12 +102,11 @@ test('Test middleware at method', () => {
     ];
 
     const result = combineRouteWithMiddleware(MyController, routes, middlewares);
-    expect(deepEqual(result, expected)).toBe(true);
+    expect(expected).toStrictEqual(result);
 });
 
 
 test('Test middleware at class, it should be applied all methods', () => {
-    const app = express();
 
     const routes: RouteMetadataArgs[] = [
         { target: MyController, path: '/users', methodName: '' },
@@ -143,13 +137,12 @@ test('Test middleware at class, it should be applied all methods', () => {
     ];
 
     const result = combineRouteWithMiddleware(MyController, routes, middlewares);
-    expect(deepEqual(result, expected)).toBe(true);
+    expect(expected).toStrictEqual(result);
 });
 
 //  Test case with multiple controller 
 
 test('Test method get & 1 method (multiple controllers)', () => {
-    const app = express();
 
     const routes: RouteMetadataArgs[] = [
         { target: MyController, path: '/users', methodName: '' },
@@ -179,5 +172,5 @@ test('Test method get & 1 method (multiple controllers)', () => {
     ];
 
     const result = combineRouteWithMiddleware(MyController, routes, middlewares);
-    expect(deepEqual(result, expected)).toBe(true);
+    expect(expected).toStrictEqual(result);
 });

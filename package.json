@@ -17,7 +17,7 @@
     "format": "prettier --write \"src/**/*.ts\" ",
     "lint": "tslint -p tsconfig.build.json",
     "test": "jest --config jestconfig.json",
-    "test:coverage": "jest --config jestconfig.json --coverage",
+    "test:coverage": "jest --config jestconfig.json --no-cache --coverage",
     "test:watch": "jest --config jestconfig.json --watch",
     "prepare": "run-s build",
     "prepublishOnly": "run-s format lint test build",

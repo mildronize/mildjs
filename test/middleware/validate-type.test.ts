@@ -11,7 +11,6 @@ export class CreateUserDto {
     public password: string;
 }
 
-
 describe('Validate Type Middleware of Request body', () => {
     let res: Response;
     let next: any;
