@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/mildronize/mildjs.svg?branch=main)](https://travis-ci.org/mildronize/mildjs) [![codecov](https://codecov.io/gh/mildronize/mildjs/branch/main/graph/badge.svg?token=ELlWnSm2Jb)](https://codecov.io/gh/mildronize/mildjs) [![npm version](https://badge.fury.io/js/%40mildjs%2Fcore.svg)](https://badge.fury.io/js/%40mildjs%2Fcore)
 
-A **lightweight framework** for creating structured and organized controllers and services with class-based design. It also provides basic decorators usage in **Express** using Typescript
+A **simple library** for creating structured and organized controllers and services with class-based design. It also provides basic decorators usage in **Express** using Typescript
 
 **Philosophy**: Provide tools for creating lightweight framework for Express app. To be easy to integrate with any kind of dependency injection tools, any service providers.
 
