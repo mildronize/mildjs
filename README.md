@@ -1,7 +1,6 @@
 # Mild JS
 
-[![Build Status](https://travis-ci.org/mildronize/route-controller.svg?branch=main)](https://travis-ci.org/mildronize/route-controller)  [![codecov](https://codecov.io/gh/mildronize/route-controller/branch/main/graph/badge.svg?token=YFCN3ZQEEI)](https://codecov.io/gh/mildronize/route-controller) [![npm version](https://badge.fury.io/js/route-controller.svg)](https://badge.fury.io/js/route-controller)
-
+[![Build Status](https://travis-ci.org/mildronize/mildjs.svg?branch=main)](https://travis-ci.org/mildronize/mildjs) [![codecov](https://codecov.io/gh/mildronize/mildjs/branch/main/graph/badge.svg?token=ELlWnSm2Jb)](https://codecov.io/gh/mildronize/mildjs) [![npm version](https://badge.fury.io/js/%40mildjs%2Fcore.svg)](https://badge.fury.io/js/%40mildjs%2Fcore)
 
 **A Simple Express Router decorator**.
 
