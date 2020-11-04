@@ -42,19 +42,19 @@ $ npm install typeorm typedi typeorm-typedi-extensions
 ## Usage
 
 ```
-Note: for version 1.0.0 and above
+Note: for version 1.4.0 and above
 ```
 
-1. setup the controller
+1. Setup the controller
 
     ```typescript
     // filename: users.controller.ts
     import { Controller, Get } from '@mildjs/core';
 
-    @Controller('/users')
+    @Controller('users')
     export class UsersController {
 
-        @Get('/')
+        @Get()
         public async getUsers(req: any, res: any, next: any) {
             const data:any = { name: "Micky" };
             res.status(200).json({ data });
@@ -62,22 +62,8 @@ Note: for version 1.0.0 and above
 
     }
     ```
-2. Setup the module
 
-    ```typescript
-    // filename: users.module.ts
-    import { Module } from '@mildjs/core';
-    import { UsersController } from './users.controller';
-
-    @Module({
-        controllers: [UsersController]
-    })
-    export class UserModule { }
-    ```
-
-
-
-3. Inject the module to Express using `useExpressServer`
+2. Inject the controller to Express using `useExpressServer`
 
     ```typescript
     // filename: main.ts
@@ -85,9 +71,11 @@ Note: for version 1.0.0 and above
     import { UserModule } from './users.module';
 
     app = express();
-    useExpressServer(app, [
-        UserModule
-    ]);
+    const appModule = {
+        controllers: [UsersController]
+    };
+    useExpressServer(app, addModule, { useController: true });
+    app.listen(3000);
     ```
 
 ## The example usage with TypeORM & TypeDI
@@ -187,7 +175,10 @@ Note: for version 1.0.0 and above
         // Make sure the database should be connected before inject the providers
         await initDatabase();
         app = express();
-        useExpressServer(app, [ UserModule ], {
+        const appModule = {
+            imports: UserModule
+        }
+        useExpressServer(app, appModule, {
             // inject the container from `createConnection`
             getProviderCallback: (provider: any) => Container.get(provider);
         });

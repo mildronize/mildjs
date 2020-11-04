@@ -12,7 +12,7 @@ interface Option {
 }
 
 export function useExpressServer(app: express.Application, modulesMetadata: ModuleMetadata, option?: Option) {
-  const useController = option?.useController === undefined? false: option?.useController;
+  const useController = option?.useController === undefined ? false : option?.useController;
 
   if (useController) {
     /**
