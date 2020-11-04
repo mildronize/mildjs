@@ -6,35 +6,36 @@ import { MiddlewareMetadataArgs, RequestMethod } from '../decorators';
 import { combineMiddlewares } from '../utils';
 import { CombineRoute, combineRouteWithMiddleware } from './combine-route-with-middleware';
 
-interface Option {
+export interface ExpressAppOption {
+  imports?: any[];
+  controllers?: any[];
   getProviderCallback?: Function;
-  useController?: boolean;
 }
 
-export function useExpressServer(app: express.Application, modulesMetadata: ModuleMetadata, option?: Option) {
-  const useController = option?.useController === undefined ? false : option?.useController;
+export function useExpressServer(app: express.Application, option?: ExpressAppOption) {
+  const controllerClasses = option?.controllers || [];
+  const moduleClasses = option?.imports || [];
 
-  if (useController) {
-    /**
-     * Using import controller only, strongly recommend to import with modules
-     */
-
-    addModuleToExpressApp(app, modulesMetadata, option);
-  } else {
     /**
      * Using import module mode
      */
 
-    const moduleClasses = modulesMetadata.imports || [];
     moduleClasses.forEach((moduleClass) => {
       const module = Reflect.getMetadata('module', moduleClass);
       addModuleToExpressApp(app, module, option);
     });
-  }
+
+    /**
+     * Using import controller only, strongly recommend to import with modules
+     */
+
+    if(controllerClasses.length > 0) 
+      addModuleToExpressApp(app, { controllers: controllerClasses }, option);
+  
   return true;
 }
 
-function addModuleToExpressApp(app: express.Application, module: ModuleMetadata, option?: Option) {
+function addModuleToExpressApp(app: express.Application, module: ModuleMetadata, option?: ExpressAppOption) {
   const store = getMetadataArgsStore();
   const controllers = module.controllers || [];
   const providers = module.providers || [];

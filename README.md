@@ -1,4 +1,4 @@
-# Mild JS
+# MildJs
 
 [![Build Status](https://travis-ci.org/mildronize/mildjs.svg?branch=main)](https://travis-ci.org/mildronize/mildjs) [![codecov](https://codecov.io/gh/mildronize/mildjs/branch/main/graph/badge.svg?token=ELlWnSm2Jb)](https://codecov.io/gh/mildronize/mildjs) [![npm version](https://badge.fury.io/js/%40mildjs%2Fcore.svg)](https://badge.fury.io/js/%40mildjs%2Fcore)
 
@@ -42,7 +42,7 @@ $ npm install typeorm typedi typeorm-typedi-extensions
 ## Usage
 
 ```
-Note: for version 1.4.0 and above
+Note: for version 1.5.0
 ```
 
 1. Setup the controller
@@ -71,10 +71,9 @@ Note: for version 1.4.0 and above
     import { UserModule } from './users.module';
 
     app = express();
-    const appModule = {
+    useExpressServer(app, {
         controllers: [UsersController]
-    };
-    useExpressServer(app, addModule, { useController: true });
+    });
     app.listen(3000);
     ```
 
@@ -175,10 +174,10 @@ Note: for version 1.4.0 and above
         // Make sure the database should be connected before inject the providers
         await initDatabase();
         app = express();
-        const appModule = {
-            imports: UserModule
-        }
-        useExpressServer(app, appModule, {
+
+        useExpressServer(app, {
+            // import module
+            imports: [ UserModule ]
             // inject the container from `createConnection`
             getProviderCallback: (provider: any) => Container.get(provider);
         });

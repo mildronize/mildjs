@@ -27,7 +27,7 @@
     "dev": "chokidar \"src/**/*.ts\" -c \"npm link\"",
     "format": "prettier --write \"src/**/*.ts\" ",
     "lint": "tslint -p tsconfig.build.json",
-    "test": "jest --config jestconfig.json --forceExit",
+    "test": "jest --config jestconfig.json --no-cache --forceExit",
     "test:coverage": "jest --config jestconfig.json ---forceExit --coverage",
     "test:watch": "jest --config jestconfig.json --watch --forceExit",
     "prepare": "run-s build",

@@ -11,16 +11,41 @@ class MockController {
     }
 }
 
+@Controller()
+class ExtraMockController {
+
+    @Get('/extra')
+    index(req: any, res: Response) {
+        res.status(200).send('OK');
+    }
+}
+
+@Module({
+    controllers: [ExtraMockController]
+})
+class ExtraMockModule { }
+
+
 describe('Run controller only mode : GET (e2e)', () => {
 
     let app: express.Application;
     beforeAll(async () => {
         app = express();
-        useExpressServer(app, { controllers: [MockController] });
-        app.listen(3015);
+        useExpressServer(app, { 
+            imports: [ExtraMockModule],
+            controllers: [MockController] 
+        });
+        app.listen(3017);
     });
 
     it('/ [get]', () => {
+        request(app)
+            .get('/')
+            .expect(200)
+            .expect('OK')
+    });
+
+    it('/extra [get]', () => {
         request(app)
             .get('/')
             .expect(200)
