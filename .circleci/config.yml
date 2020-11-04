@@ -3,11 +3,8 @@ orbs:
   node: circleci/node@3.0.0
   codecov: codecov/codecov@1.0.2
 workflows:
-  node-tests:
+  build_and_test:
     jobs:
       - node/test
-jobs:
-  build:
-    steps:
       - codecov/upload:
-          file: {{ coverage_report_filepath }}
+        file: {{ coverage_report_filepath }}
