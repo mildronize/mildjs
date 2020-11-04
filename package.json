@@ -1,6 +1,6 @@
 {
   "name": "@mildjs/core",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "author": "Thada Wangthammang",
   "description": "Simple Express decorator for router",
   "directories": {
@@ -33,7 +33,7 @@
     "prepare": "run-s build",
     "prepublishOnly": "run-s format lint test build",
     "publish:patch": "npm version patch --force && npm publish",
-    "postpublish" : "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag v$PACKAGE_VERSION && git push --tags",
+    "postpublish": "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag v$PACKAGE_VERSION && git push --tags",
     "example": "chokidar \"**/*.ts\" -c  \" ts-node example/tester/index.ts\""
   },
   "peerDependencies": {

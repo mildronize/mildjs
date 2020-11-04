@@ -8,11 +8,11 @@ import { CombineRoute, combineRouteWithMiddleware } from './combine-route-with-m
 
 interface Option {
   getProviderCallback?: Function;
-  useController: boolean;
+  useController?: boolean;
 }
 
 export function useExpressServer(app: express.Application, modulesMetadata: ModuleMetadata, option?: Option) {
-  const useController = option?.useController || false;
+  const useController = option?.useController === undefined? false: option?.useController;
 
   if (useController) {
     /**
