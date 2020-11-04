@@ -16,22 +16,21 @@ export function useExpressServer(app: express.Application, option?: ExpressAppOp
   const controllerClasses = option?.controllers || [];
   const moduleClasses = option?.imports || [];
 
-    /**
-     * Using import module mode
-     */
+  /**
+   * Using import module mode
+   */
 
-    moduleClasses.forEach((moduleClass) => {
-      const module = Reflect.getMetadata('module', moduleClass);
-      addModuleToExpressApp(app, module, option);
-    });
+  moduleClasses.forEach((moduleClass) => {
+    const module = Reflect.getMetadata('module', moduleClass);
+    addModuleToExpressApp(app, module, option);
+  });
 
-    /**
-     * Using import controller only, strongly recommend to import with modules
-     */
+  /**
+   * Using import controller only, strongly recommend to import with modules
+   */
 
-    if(controllerClasses.length > 0) 
-      addModuleToExpressApp(app, { controllers: controllerClasses }, option);
-  
+  if (controllerClasses.length > 0) addModuleToExpressApp(app, { controllers: controllerClasses }, option);
+
   return true;
 }
 
