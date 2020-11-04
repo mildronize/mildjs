@@ -1,17 +1,16 @@
-# MildJs
+# MildJS
 
 [![Build Status](https://travis-ci.org/mildronize/mildjs.svg?branch=main)](https://travis-ci.org/mildronize/mildjs) [![codecov](https://codecov.io/gh/mildronize/mildjs/branch/main/graph/badge.svg?token=ELlWnSm2Jb)](https://codecov.io/gh/mildronize/mildjs) [![npm version](https://badge.fury.io/js/%40mildjs%2Fcore.svg)](https://badge.fury.io/js/%40mildjs%2Fcore)
 
-**A Simple Express Router decorator**.
+A **lightweight framework** for creating structured and organized controllers and services with class-based design. It also provides basic decorators usage in **Express** using Typescript
 
-Aim: To separate codes into many pieces for testing purposes.
+**Philosophy**: Provide tools for creating lightweight framework for Express app. To be easy to integrate with any kind of dependency injection tools, any service providers.
 
-The concept is `Module` contains:
+However, it focus on low dependency as much as possible. The tools should help to define the stucture of code for testing purpose, but also flexible for add other tools.
 
-- `Controller`: Combine the controller, middleware and routing
-- `Service`: To connect with other service like Database.
+**Inspiration from:**  [Nestjs](https://nestjs.com/), [Routing Controllers](https://github.com/typestack/routing-controllers), [OvernightJS](https://github.com/seanpmaxwell/overnight)
 
-** Alternatively: [routing-controllers](https://github.com/typestack/routing-controllers)
+----
 
 ## Features
 
@@ -32,14 +31,12 @@ Install the module
 $ npm install @mildjs/core reflect-metadata
 ```
 
-If you want to use with TypeORM, please install
-
-```bash
-$ npm install typeorm typedi typeorm-typedi-extensions
-```
-
-
 ## Usage
+
+The concept is `Module` contains:
+
+- `Controller`: Combine the controller, middleware and routing
+- `Service`: To connect with other service like Database.
 
 ```
 Note: for version 1.5.0
@@ -78,6 +75,12 @@ Note: for version 1.5.0
     ```
 
 ## The example usage with TypeORM & TypeDI
+
+If you want to use with TypeORM, please install
+
+```bash
+$ npm install typeorm typedi typeorm-typedi-extensions
+```
 
 1. setup the entity & service
 
@@ -231,7 +234,7 @@ Note: for version 1.5.0
     Finally, the error will be passing to the error handling middle of Express app. 
 
     ```typescript
-    aap.use( (error, req, res, next ) => {
+    app.use( (error, req, res, next ) => {
         res.send(error.message);
     })
     ```
@@ -239,6 +242,10 @@ Note: for version 1.5.0
 ## Thanks
 
 - [postpublish script by muffinman.io](https://muffinman.io/add-git-version-tag-after-publishing-to-npm/)
+
+## Pull Request
+
+Fine, you can help to improve this project
 
 ## License
 
