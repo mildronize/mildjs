@@ -4,25 +4,39 @@ import { getMetadataArgsStore } from '../decorators/metadata';
 import { RouteMetadataArgs } from '..';
 import { MiddlewareMetadataArgs, RequestMethod } from '../decorators';
 import { combineMiddlewares } from '../utils';
-// import { Container } from 'typedi';
 import { CombineRoute, combineRouteWithMiddleware } from './combine-route-with-middleware';
 
 interface Option {
   getProviderCallback?: Function;
+  useController: boolean;
 }
 
-export function useExpressServer(app: express.Application, modules: any[], option?: Option) {
-  modules.forEach((_module) => {
-    const module = Reflect.getMetadata('module', _module);
-    addModuleToExpressApp(app, module, option);
-  });
+export function useExpressServer(app: express.Application, modulesMetadata: ModuleMetadata, option?: Option) {
+  const useController = option?.useController || false;
 
+  if (useController) {
+    /**
+     * Using import controller only, strongly recommend to import with modules
+     */
+
+    addModuleToExpressApp(app, modulesMetadata, option);
+  } else {
+    /**
+     * Using import module mode
+     */
+
+    const moduleClasses = modulesMetadata.imports || [];
+    moduleClasses.forEach((moduleClass) => {
+      const module = Reflect.getMetadata('module', moduleClass);
+      addModuleToExpressApp(app, module, option);
+    });
+  }
   return true;
 }
 
 function addModuleToExpressApp(app: express.Application, module: ModuleMetadata, option?: Option) {
   const store = getMetadataArgsStore();
-  const controllers = module.controllers;
+  const controllers = module.controllers || [];
   const providers = module.providers || [];
 
   // From TypeDi

@@ -11,19 +11,13 @@ class MockController {
     }
 }
 
-@Module({
-    controllers: [MockController]
-})
-class MockModule { }
-
-
-describe('Module with controller GET (e2e)', () => {
+describe('Run controller only mode : GET (e2e)', () => {
 
     let app: express.Application;
     beforeAll(async () => {
         app = express();
-        useExpressServer(app, { imports: [MockModule] });
-        app.listen(3010);
+        useExpressServer(app, { controllers: [MockController] }, { useController: true });
+        app.listen(3015);
     });
 
     it('/ [get]', () => {

@@ -36,7 +36,7 @@ describe('Module with controller (Middleware) (e2e)', () => {
     let app: express.Application;
     beforeAll(async () => {
         app = express();
-        useExpressServer(app, [MockModule]);
+        useExpressServer(app, { imports: [MockModule] });
         app.listen(3013);
     });
 

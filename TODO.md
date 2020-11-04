@@ -1,3 +1,2 @@
 
-- [X] Add multiple middleware
-- [ ] Add middleware add class level
+-  [ ] Throw error on runtime failure (When wrong usage)
