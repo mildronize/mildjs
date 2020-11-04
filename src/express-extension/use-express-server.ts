@@ -4,11 +4,11 @@ import { getMetadataArgsStore } from '../decorators/metadata';
 import { RouteMetadataArgs } from '..';
 import { MiddlewareMetadataArgs, RequestMethod } from '../decorators';
 import { combineMiddlewares } from '../utils';
-import { Container } from 'typedi';
+// import { Container } from 'typedi';
 import { CombineRoute, combineRouteWithMiddleware } from './combine-route-with-middleware';
 
 interface Option {
-  container?: typeof Container;
+  getProviderCallback?: Function;
 }
 
 export function useExpressServer(app: express.Application, modules: any[], option?: Option) {
@@ -26,8 +26,8 @@ function addModuleToExpressApp(app: express.Application, module: ModuleMetadata,
   const providers = module.providers || [];
 
   // From TypeDi
-  const getContainer = option?.container || undefined;
-  const providerInstances = createProviders(providers, getContainer);
+  const getProviderCallback = option?.getProviderCallback || undefined;
+  const providerInstances = createProviders(providers, getProviderCallback);
 
   controllers.forEach((controller) => {
     const controllerInstance = injectDependencies(controller, providerInstances || []);
@@ -68,6 +68,8 @@ export const asyncHelper = (fn: any) => (req: Request, res: Response, next: Next
 };
 
 /*
+If you are using 'typedi' you can passing container.get() into this
+
 Get the services using Container.get([Service Name]) from 'typedi'
 
 For setup the service, using @Service(), example
@@ -76,9 +78,13 @@ For setup the service, using @Service(), example
 class MyService{}
 */
 
-export function createProviders(providers: any[], container: any) {
-  if (container === undefined) return undefined;
-  return providers.map((provider) => container.get(provider));
+export function createProviders(providers: any[], getProviderCallback: any) {
+  if (getProviderCallback === undefined) {
+    // tslint:disable-next-line:no-console
+    console.log(`WARN: Create empty provider instance, it may not work`);
+    return providers.map((provider) => new provider());
+  }
+  return providers.map((provider) => getProviderCallback(provider));
 }
 
 export function injectDependencies(controller: any, providerInstances: any[]): any {

@@ -19,26 +19,27 @@ class AuthService {
     info() { return "auth" }
 }
 
-
+const getProviderCallback = (provider: any) => Container.get(provider);
 
 describe('Inject Dependencies', () => {
 
     it('It should be empty list of providers', () => {
         const providerClasses: any[] = [];
-        const providers: any[] = createProviders(providerClasses, Container) || [];
+
+        const providers: any[] = createProviders(providerClasses, getProviderCallback) || [];
         expect(providers.length).toBe(0);
     });
 
     it('The service should be defined', () => {
         const providerClasses: any[] = [UsersService];
-        const providers: any[] = createProviders(providerClasses, Container) || [];
+        const providers: any[] = createProviders(providerClasses, getProviderCallback) || [];
         expect(providers.length).toBe(1);
         expect(providers[0]).toBeDefined();
     });
 
     it('The service should be defined', () => {
         const providerClasses: any[] = [UsersService];
-        const providers: any[] = createProviders(providerClasses, Container) || [];
+        const providers: any[] = createProviders(providerClasses, getProviderCallback) || [];
         expect(providers.length).toBe(1);
         expect(providers[0]).toBeDefined();
 
@@ -46,7 +47,7 @@ describe('Inject Dependencies', () => {
     
     it('The service should be defined (2 services)', () => {
         const providerClasses: any[] = [UsersService, AuthService];
-        const providers: any[] = createProviders(providerClasses, Container) || [];
+        const providers: any[] = createProviders(providerClasses, getProviderCallback) || [];
         expect(providers.length).toBe(2);
         expect(providers[0]).toBeDefined();
     });

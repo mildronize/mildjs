@@ -190,7 +190,7 @@ Note: for version 1.0.0 and above
         app = express();
         useExpressServer(app, [ UserModule ], {
             // inject the container from `createConnection`
-            container: Container;
+            getProviderCallback: (provider: any) => Container.get(provider);
         });
     }
 
