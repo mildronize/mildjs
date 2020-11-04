@@ -1,11 +1,15 @@
 {
-  "name": "@lightjs/core",
+  "name": "@mildjs/core",
   "version": "1.3.0",
-  "description": "Simple Express decorator for router",
   "author": "Thada Wangthammang",
+  "description": "Simple Express decorator for router",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mildronize/lightjs"
+    "url": "git+https://github.com/mildronize/mildjs.git"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,6 +18,10 @@
     "node": ">=8",
     "npm": ">=5"
   },
+  "bugs": {
+    "url": "https://github.com/mildronize/mildjs/issues"
+  },
+  "homepage": "https://github.com/mildronize/mildjs#readme",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "dev": "chokidar \"src/**/*.ts\" -c \"npm link\"",
