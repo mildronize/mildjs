@@ -31,7 +31,7 @@
     "test:coverage": "jest --config jestconfig.json ---forceExit --coverage",
     "test:watch": "jest --config jestconfig.json --watch --forceExit",
     "prepare": "run-s build",
-    "prepublishOnlyx": "run-s format lint test build",
+    "prepublishOnly": "run-s format lint test build",
     "publish:patch": "npm version patch --force && npm publish",
     "example": "chokidar \"**/*.ts\" -c  \" ts-node example/tester/index.ts\""
   },

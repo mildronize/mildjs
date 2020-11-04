@@ -41,9 +41,10 @@ function addRouterToExpress(app: express.Application, combinedRoutes: CombineRou
   combinedRoutes.forEach((route: any) => {
     if (!route.isClass) {
       const requestMethod: RequestMethod = route.requestMethod;
-      const routePath = prefix + route.path;
+      const routePath = combineRouterPath(prefix, route.path);
 
       if (route.middlewares.length > 0) {
+        // Combine multiple middlewares
         const middleware = combineMiddlewares(...route.middlewares);
         app[requestMethod](routePath, middleware, callInstance(controllerInstance, route));
       } else {
@@ -52,6 +53,21 @@ function addRouterToExpress(app: express.Application, combinedRoutes: CombineRou
     }
   });
 }
+
+export const combineRouterPath = (prefix: string, path: string) => {
+  let result = '';
+  if (prefix !== '') {
+    if (prefix.charAt(0) === '/') prefix = prefix.substring(1);
+    result += prefix;
+  }
+  result += '/';
+  if (path !== '') {
+    if (path.charAt(0) === '/') path = path.substring(1);
+    result += path;
+  }
+  if (result.charAt(0) !== '/') return '/' + result;
+  return result;
+};
 
 const callInstance = (instance: any, route: RouteMetadataArgs) =>
   asyncHelper(async (req: Request, res: Response, next: NextFunction) => {
