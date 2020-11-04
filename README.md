@@ -29,7 +29,7 @@ The concept is `Module` contains:
 Install the module
 
 ```bash
-$ npm install route-controller reflect-metadata
+$ npm install @mildjs/core reflect-metadata
 ```
 
 If you want to use with TypeORM, please install
@@ -49,7 +49,7 @@ Note: for version 1.0.0 and above
 
     ```typescript
     // filename: users.controller.ts
-    import { Controller, Get } from 'route-controller';
+    import { Controller, Get } from '@mildjs/core';
 
     @Controller('/users')
     export class UsersController {
@@ -66,7 +66,7 @@ Note: for version 1.0.0 and above
 
     ```typescript
     // filename: users.module.ts
-    import { Module } from 'route-controller';
+    import { Module } from '@mildjs/core';
     import { UsersController } from './users.controller';
 
     @Module({
@@ -135,7 +135,7 @@ Note: for version 1.0.0 and above
 
     ```typescript
     // filename: users.controller.ts
-    import { Controller, Get } from 'route-controller';
+    import { Controller, Get } from '@mildjs/core';
     import { UsersService } from './users.service';
     import { User} from 'users.entity';
 
@@ -156,7 +156,7 @@ Note: for version 1.0.0 and above
 
     ```typescript
     // filename: users.module.ts
-    import { Module } from 'route-controller';
+    import { Module } from '@mildjs/core';
     import { UsersController } from './users.controller';
     import { UsersService } from './users.service';
 
