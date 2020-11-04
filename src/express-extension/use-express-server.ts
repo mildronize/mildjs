@@ -58,12 +58,12 @@ const callInstance = (instance: any, route: RouteMetadataArgs) =>
     await instance[route.methodName](req, res, next);
   });
 
-const getPrefix = (routes: any[]) => {
+export const getPrefix = (routes: any[]) => {
   for (const i in routes) if (routes[i].isClass) return routes[i].path;
   return '';
 };
 
-const asyncHelper = (fn: any) => (req: Request, res: Response, next: NextFunction) => {
+export const asyncHelper = (fn: any) => (req: Request, res: Response, next: NextFunction) => {
   fn(req, res, next).catch(next);
 };
 
@@ -82,17 +82,13 @@ export function createProviders(providers: any[], container: any) {
 }
 
 export function injectDependencies(controller: any, providerInstances: any[]): any {
-  if (!providerInstances) {
-    const controllerInstance = new controller();
-
+  if (providerInstances.length === 0) {
     // tslint:disable-next-line:no-console
-    console.log(`WARN: Create instance of '${controllerInstance.constructor.name}' without inject the any service.`);
+    console.log(`WARN: Create controller instance  without inject the any service.`);
     /*
     If you would like to use the service, you should passing the 'Container' from 'typedi'.
     This library is designed for TypeORM & typedi only.`); 
     */
-
-    return controllerInstance;
   }
   return new controller(...providerInstances);
 }
