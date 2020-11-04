@@ -246,6 +246,10 @@ Note: for version 1.0.0 and above
     })
     ```
 
+## Thanks
+
+- [postpublish script by muffinman.io](https://muffinman.io/add-git-version-tag-after-publishing-to-npm/)
+
 ## License
 
 MIT
