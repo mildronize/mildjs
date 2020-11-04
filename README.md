@@ -2,7 +2,6 @@
 
 [![Build Status](https://travis-ci.org/mildronize/route-controller.svg?branch=main)](https://travis-ci.org/mildronize/route-controller)  [![codecov](https://codecov.io/gh/mildronize/route-controller/branch/main/graph/badge.svg?token=YFCN3ZQEEI)](https://codecov.io/gh/mildronize/route-controller) [![npm version](https://badge.fury.io/js/route-controller.svg)](https://badge.fury.io/js/route-controller)
 
-> **Remark!** Don't ready to use for production yet.
 
 **A Simple Express Router decorator**.
 
