@@ -2,8 +2,6 @@ language: node_js
 node_js:
   - 10
 before_script:
-  - npm install typeorm typedi typeorm-typedi-extensions reflect-metadata @types/node
+  - npm install
 script:
-  - npm run test:coverage
-  - npm run build
-  - bash <(curl -s https://codecov.io/bash)
+  - SCOPE=packages/core npm start

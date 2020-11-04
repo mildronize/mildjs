@@ -1,0 +1,22 @@
+{
+  "name": "mildjs",
+  "version": "1.0.0",
+  "description": "[![Build Status](https://travis-ci.org/mildronize/mildjs.svg?branch=main)](https://travis-ci.org/mildronize/mildjs) [![codecov](https://codecov.io/gh/mildronize/mildjs/branch/main/graph/badge.svg?token=ELlWnSm2Jb)](https://codecov.io/gh/mildronize/mildjs) [![npm version](https://badge.fury.io/js/%40mildjs%2Fcore.svg)](https://badge.fury.io/js/%40mildjs%2Fcore)",
+  "main": "index.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mildronize/mildjs.git"
+  },
+  "author": "Thada",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mildronize/mildjs/issues"
+  },
+  "homepage": "https://github.com/mildronize/mildjs#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2"
+  }
+}
