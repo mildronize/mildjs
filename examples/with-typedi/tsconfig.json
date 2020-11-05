@@ -15,9 +15,7 @@
     "esModuleInterop": true
   },
   "include": [
-    "src",
-    "example",
-    "test"
+    "src"
   ],
   "exclude": [
     "node_modules",

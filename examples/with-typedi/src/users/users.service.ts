@@ -5,6 +5,6 @@ import { Service } from 'typedi';
 export class UsersService {
 
     public find() {
-        return { name: 'Data from service ' };
+        return { name: 'Data from service (using typedi)' };
     }
 }
