@@ -32,7 +32,7 @@ describe('Run controller only mode : GET (e2e)', () => {
     beforeAll(async () => {
         app = express();
         useExpressServer(app, { controllers: [MockController] });
-        app.listen(3016);
+        app.listen();
     });
 
     it('/ [get]', () => {

@@ -34,7 +34,7 @@ describe('Combine Middlewares', () => {
         const combinedMiddlewares = combineMiddlewares(firstMiddleware, secondMiddleware);
 
         app.use(combinedMiddlewares);
-        app.listen(3014);
+        app.listen();
 
         request(app)
             .get('/')

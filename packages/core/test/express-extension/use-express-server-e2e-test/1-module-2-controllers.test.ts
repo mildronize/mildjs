@@ -32,7 +32,7 @@ describe('Module with controller GET (e2e)', () => {
     beforeAll(async () => {
         app = express();
         useExpressServer(app, { imports: [MockModule] });
-        app.listen(3009);
+        app.listen();
     });
 
     it('/ [get] ', () => {

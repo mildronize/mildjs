@@ -35,7 +35,7 @@ describe('Run controller only mode : GET (e2e)', () => {
             imports: [ExtraMockModule],
             controllers: [MockController] 
         });
-        app.listen(3017);
+        app.listen();
     });
 
     it('/ [get]', () => {
