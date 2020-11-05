@@ -21,12 +21,11 @@ export function useExpressServer(app: express.Application, option?: ExpressAppOp
    */
 
   moduleClasses.forEach((moduleClass) => {
-
     /**
      * create instance of modules, for bootstrapping some code in each module
      */
     createModuleInstance(moduleClass);
-    
+
     const module = Reflect.getMetadata('module', moduleClass);
     addModuleToExpressApp(app, module, option);
   });
@@ -76,7 +75,7 @@ function addRouterToExpress(app: express.Application, combinedRoutes: CombineRou
 
 export const createModuleInstance = (moduleClass: any) => {
   return new moduleClass();
-}
+};
 
 export const combineRouterPath = (prefix: string, path: string) => {
   let result = '';
