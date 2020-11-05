@@ -21,6 +21,12 @@ export function useExpressServer(app: express.Application, option?: ExpressAppOp
    */
 
   moduleClasses.forEach((moduleClass) => {
+
+    /**
+     * create instance of modules, for bootstrapping some code in each module
+     */
+    createModuleInstance(moduleClass);
+    
     const module = Reflect.getMetadata('module', moduleClass);
     addModuleToExpressApp(app, module, option);
   });
@@ -39,7 +45,7 @@ function addModuleToExpressApp(app: express.Application, module: ModuleMetadata,
   const controllers = module.controllers || [];
   const providers = module.providers || [];
 
-  // From TypeDi
+  // get the provide From DI
   const getProviderCallback = option?.getProviderCallback || undefined;
   const providerInstances = createProviders(providers, getProviderCallback);
 
@@ -66,6 +72,10 @@ function addRouterToExpress(app: express.Application, combinedRoutes: CombineRou
       }
     }
   });
+}
+
+export const createModuleInstance = (moduleClass: any) => {
+  return new moduleClass();
 }
 
 export const combineRouterPath = (prefix: string, path: string) => {
