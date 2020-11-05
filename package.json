@@ -1,6 +1,6 @@
 {
   "name": "mildjs",
-  "version": "1.5.2",
+  "version": "2.0.0-alpha.0",
   "description": "[![Build Status](https://travis-ci.org/mildronize/mildjs.svg?branch=main)](https://travis-ci.org/mildronize/mildjs) [![codecov](https://codecov.io/gh/mildronize/mildjs/branch/main/graph/badge.svg?token=ELlWnSm2Jb)](https://codecov.io/gh/mildronize/mildjs) [![npm version](https://badge.fury.io/js/%40mildjs%2Fcore.svg)](https://badge.fury.io/js/%40mildjs%2Fcore)",
   "main": "index.js",
   "scripts": {
