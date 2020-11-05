@@ -12,8 +12,8 @@ const uploadCoverage = async () => await run(scope, 'bash -c "bash <(curl -s htt
 // exports.build = build;
 exports.default = series(
   before,
-//   build,
-//   test,
-//   testCoverage,
-//   uploadCoverage
+  build,
+  test,
+  testCoverage,
+  uploadCoverage
 );

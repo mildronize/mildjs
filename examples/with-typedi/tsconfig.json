@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "dist",
+    "baseUrl": "src",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "declaration": true,
+    "strict": false,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "src",
+    "example",
+    "test"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

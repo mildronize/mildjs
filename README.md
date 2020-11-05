@@ -54,7 +54,7 @@ Note: for version 1.5.0
         @Get()
         public async getUsers(req: any, res: any, next: any) {
             const data:any = { name: "Micky" };
-            res.status(200).json({ data });
+            res.status(200).json( data );
         }
 
     }
@@ -65,9 +65,10 @@ Note: for version 1.5.0
     ```typescript
     // filename: main.ts
     import express from 'express';
-    import { UserModule } from './users.module';
+    import { UsersController } from './users.controller';
+    import { useExpressServer } from '@mildjs/core';
 
-    app = express();
+    const app = express();
     useExpressServer(app, {
         controllers: [UsersController]
     });
@@ -154,7 +155,7 @@ $ npm install typeorm typedi typeorm-typedi-extensions
         controllers: [ UsersController ],
         providers: [ UsersService ]
     })
-    export class UserModule { }
+    export class UsersModule { }
     ```
 
 4. setup the express app & typeORM connect with the DB
@@ -162,7 +163,7 @@ $ npm install typeorm typedi typeorm-typedi-extensions
     ```typescript
     // main.ts
     import express from 'express';
-    import { UserModule } from './users.module';
+    import { UsersModule } from './users.module';
     import { Container } from 'typedi';
     import { createConnection, useContainer } from 'typeorm';
 
@@ -180,7 +181,7 @@ $ npm install typeorm typedi typeorm-typedi-extensions
 
         useExpressServer(app, {
             // import module
-            imports: [ UserModule ]
+            imports: [ UsersModule ]
             // inject the container from `createConnection`
             getProviderCallback: (provider: any) => Container.get(provider);
         });
