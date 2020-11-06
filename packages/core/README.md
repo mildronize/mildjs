@@ -10,4 +10,4 @@ A **lightweight framework** for creating structured and organized controllers an
 
 **Philosophy**: Provide tools for creating lightweight framework for Express app. The tools should help to define the structure of code for testing purpose.
 
-**Inspiration from:**  [Nestjs](https://nestjs.com/), [Routing Controllers](https://github.com/typestack/routing-controllers), [OvernightJS](https://github.com/seanpmaxwell/overnight)
+**Inspiration from:**  [Nestjs](https://nestjs.com/), [Angular](https://angular.io/) [Routing Controllers](https://github.com/typestack/routing-controllers), [OvernightJS](https://github.com/seanpmaxwell/overnight) 

@@ -5,20 +5,16 @@ import { RouteMetadataArgs } from '..';
 import { MiddlewareMetadataArgs, RequestMethod } from '../decorators';
 import { combineMiddlewares } from '../utils';
 import { CombineRoute, combineRouteWithMiddleware } from './combine-route-with-middleware';
-import {ReflectiveInjector} from 'injection-js';
+import { ReflectiveInjector } from 'injection-js';
 
 export interface ExpressAppOption {
   imports?: any[];
   controllers?: any[];
-  getProviderCallback?: Function;
 }
 
 export function useExpressServer(app: express.Application, option?: ExpressAppOption) {
   const controllerClasses = option?.controllers || [];
   const moduleClasses = option?.imports || [];
-
-  console.log('hey');
-
 
   /**
    * Using import module mode
@@ -49,8 +45,10 @@ function addModuleToExpressApp(app: express.Application, module: ModuleMetadata,
   const providers = module.providers || [];
 
   controllers.forEach((controller) => {
-
-    // const reflectiveInjectorProviders: Provider[] = [controller, ...providers];
+    /**
+     * Resolving the dependencies of controllers and services
+     * Then, get controller instance
+     */
 
     const injector = ReflectiveInjector.resolveAndCreate([controller, ...providers]);
     const controllerInstance = injector.get(controller) as typeof controller;
@@ -110,35 +108,3 @@ export const getPrefix = (routes: any[]) => {
 export const asyncHelper = (fn: any) => (req: Request, res: Response, next: NextFunction) => {
   fn(req, res, next).catch(next);
 };
-
-/*
-If you are using 'typedi' you can passing container.get() into this
-
-Get the services using Container.get([Service Name]) from 'typedi'
-
-For setup the service, using @Service(), example
-
-@Service()
-class MyService{}
-*/
-
-export function createProviders(providers: any[], getProviderCallback: any) {
-  if (getProviderCallback === undefined) {
-    // tslint:disable-next-line:no-console
-    console.log(`WARN: Create empty provider instance, it may not work`);
-    return providers.map((provider) => new provider());
-  }
-  return providers.map((provider) => getProviderCallback(provider));
-}
-
-export function injectDependencies(controller: any, providerInstances: any[]): any {
-  if (providerInstances.length === 0) {
-    // tslint:disable-next-line:no-console
-    console.log(`WARN: Create controller instance  without inject the any service.`);
-    /*
-    If you would like to use the service, you should passing the 'Container' from 'typedi'.
-    This library is designed for TypeORM & typedi only.`); 
-    */
-  }
-  return new controller(...providerInstances);
-}
