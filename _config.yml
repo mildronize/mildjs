@@ -1,5 +1,4 @@
 title: MildJS
-logo: /assets/img/logo.png
 description: A simple library for creating structured and organized controller and service with class-based design. It also provides basic decorators usage in Express using Typescript
 show_downloads: true
 google_analytics: 
