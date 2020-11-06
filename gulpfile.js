@@ -1,7 +1,7 @@
 const { series, parallel } = require('gulp');
 const { run } = require('./build-utils');
 
-const scope = 'cd ' + (process.env.SCOPE || 'packages/core');
+const scope = 'cd ' + (process.env.DIR || 'packages/core');
 
 const before = async () => await run(scope, 'npm install reflect-metadata @types/node');
 const build = async () => await run(scope, 'npm run build');
