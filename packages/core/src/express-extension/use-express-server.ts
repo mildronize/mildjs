@@ -5,6 +5,7 @@ import { RouteMetadataArgs } from '..';
 import { MiddlewareMetadataArgs, RequestMethod } from '../decorators';
 import { combineMiddlewares } from '../utils';
 import { CombineRoute, combineRouteWithMiddleware } from './combine-route-with-middleware';
+import {ReflectiveInjector} from 'injection-js';
 
 export interface ExpressAppOption {
   imports?: any[];
@@ -15,6 +16,9 @@ export interface ExpressAppOption {
 export function useExpressServer(app: express.Application, option?: ExpressAppOption) {
   const controllerClasses = option?.controllers || [];
   const moduleClasses = option?.imports || [];
+
+  console.log('hey');
+
 
   /**
    * Using import module mode
@@ -44,12 +48,13 @@ function addModuleToExpressApp(app: express.Application, module: ModuleMetadata,
   const controllers = module.controllers || [];
   const providers = module.providers || [];
 
-  // get the provide From DI
-  const getProviderCallback = option?.getProviderCallback || undefined;
-  const providerInstances = createProviders(providers, getProviderCallback);
-
   controllers.forEach((controller) => {
-    const controllerInstance = injectDependencies(controller, providerInstances || []);
+
+    // const reflectiveInjectorProviders: Provider[] = [controller, ...providers];
+
+    const injector = ReflectiveInjector.resolveAndCreate([controller, ...providers]);
+    const controllerInstance = injector.get(controller) as typeof controller;
+
     const combinedRoutes = combineRouteWithMiddleware(controller, store.routes, store.middlewares);
     addRouterToExpress(app, combinedRoutes, controllerInstance);
   });

@@ -1,4 +1,4 @@
-import { Controller, Get } from '@mildjs/core';
+import { Controller, Get } from '../../../../packages/core/src';
 import { UsersService } from './users.service';
 
 @Controller('users')

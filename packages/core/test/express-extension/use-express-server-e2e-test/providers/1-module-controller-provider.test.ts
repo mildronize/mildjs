@@ -1,34 +1,15 @@
-import { Controller, Get, Module, useExpressServer } from '../../../src';
+import { Controller, Get, Module, useExpressServer, Injectable } from '../../../../src';
 import express, { Response } from "express";
 import request from 'supertest';
-import { Service } from 'typedi';
 
-@Controller()
-class MockController {
-
-    constructor(private mockService: MockService){}
-
-    @Get()
-    index(req: any, res: Response) {
-        const data = this.mockService.getData();
-        res.status(200).send(data);
-    }
-}
-
-@Service()
-class MockService{
-    
-    getData(): string{
-        return "mock service";
-    }
-}
+import { MockService } from './mock.service';
+import { MockController} from './mock.controller';
 
 @Module({
     controllers: [MockController],
     providers: [MockService]
 })
 class MockModule { }
-
 
 describe('Module with controller + providers (Mock service) GET (e2e)', () => {
 
