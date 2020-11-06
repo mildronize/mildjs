@@ -5,11 +5,27 @@ import { RouteMetadataArgs } from '..';
 import { MiddlewareMetadataArgs, RequestMethod } from '../decorators';
 import { combineMiddlewares } from '../utils';
 import { CombineRoute, combineRouteWithMiddleware } from './combine-route-with-middleware';
-import { ReflectiveInjector } from 'injection-js';
+import { ReflectiveInjector, InjectionToken } from 'injection-js';
 
 export interface ExpressAppOption {
+  /**
+   * **Global modules** to be imported
+   */
+
   imports?: any[];
+
+  /**
+   * **Global Controllers**, these controllers will be injected in the Express app,
+   * however, it cannot access the providers inside the modules.
+   */
+
   controllers?: any[];
+
+  /**
+   * **Global providers**, these providers will be injected in all modules
+   */
+
+  providers?: any[];
 }
 
 export function useExpressServer(app: express.Application, option?: ExpressAppOption) {
@@ -43,6 +59,7 @@ function addModuleToExpressApp(app: express.Application, module: ModuleMetadata,
   const store = getMetadataArgsStore();
   const controllers = module.controllers || [];
   const providers = module.providers || [];
+  const globalProvidersClasses = option?.providers || [];
 
   controllers.forEach((controller) => {
     /**
@@ -50,7 +67,7 @@ function addModuleToExpressApp(app: express.Application, module: ModuleMetadata,
      * Then, get controller instance
      */
 
-    const injector = ReflectiveInjector.resolveAndCreate([controller, ...providers]);
+    const injector = ReflectiveInjector.resolveAndCreate([controller, ...providers, ...globalProvidersClasses]);
     const controllerInstance = injector.get(controller) as typeof controller;
 
     const combinedRoutes = combineRouteWithMiddleware(controller, store.routes, store.middlewares);
