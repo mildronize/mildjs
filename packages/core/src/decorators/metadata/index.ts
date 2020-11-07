@@ -1,5 +1,4 @@
-import { RouteMetadata } from '../interfaces/route-metadata.interface';
-import { MetadataArgsStore } from '../interfaces/metadata-args-store';
+import { MetadataArgsStore } from '../../interfaces/metadata-args-store';
 
 /**
  * Gets metadata args store.

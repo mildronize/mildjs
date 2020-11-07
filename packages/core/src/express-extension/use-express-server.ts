@@ -1,11 +1,11 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { ModuleMetadata } from '../decorators/interfaces/module-metadata.interface';
+import { ModuleMetadata } from '../interfaces/module-metadata.interface';
 import { getMetadataArgsStore } from '../decorators/metadata';
 import { RouteMetadataArgs } from '..';
-import { MiddlewareMetadataArgs, RequestMethod } from '../decorators';
+import { MiddlewareMetadataArgs, RequestMethod } from '../interfaces';
 import { combineMiddlewares } from '../utils';
 import { CombineRoute, combineRouteWithMiddleware } from './combine-route-with-middleware';
-import { ReflectiveInjector, InjectionToken } from 'injection-js';
+import { ReflectiveInjector, InjectionToken, Injectable } from 'injection-js';
 
 export interface ExpressAppOption {
   /**
@@ -37,25 +37,40 @@ export function useExpressServer(app: express.Application, option?: ExpressAppOp
    */
 
   moduleClasses.forEach((moduleClass) => {
+
     /**
      * create instance of modules, for bootstrapping some code in each module
+     * Do not add bootstrap code in the constructor, call in `onInit` instead
      */
-    createModuleInstance(moduleClass);
+    const moduleInstance = createModuleInstance(moduleClass);
+    if(moduleInstance.hasOwnProperty('forRoot')){
 
-    const module = Reflect.getMetadata('module', moduleClass);
-    addModuleToExpressApp(app, module, option);
+    }
+
+      const module = Reflect.getMetadata('module', moduleClass);
+      addModule(app, module, option);
+
   });
 
   /**
    * Using import controller only, strongly recommend to import with modules
    */
 
-  if (controllerClasses.length > 0) addModuleToExpressApp(app, { controllers: controllerClasses }, option);
+  if (controllerClasses.length > 0) addModule(app, { controllers: controllerClasses }, option);
 
   return true;
 }
 
-function addModuleToExpressApp(app: express.Application, module: ModuleMetadata, option?: ExpressAppOption) {
+// function addInjectableModule(app: express.Application, moduleClass: any, option?: ExpressAppOption) {
+//   const moduleInstance = createModuleInstance(moduleClass);
+//   // const globalProvidersClasses = option?.providers || [];
+
+//   if(moduleInstance.hasOwnProperty('forRoot')){
+
+//   }
+// }
+
+function addModule(app: express.Application, module: ModuleMetadata, option?: ExpressAppOption) {
   const store = getMetadataArgsStore();
   const controllers = module.controllers || [];
   const providers = module.providers || [];
