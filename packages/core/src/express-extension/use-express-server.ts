@@ -2,79 +2,100 @@ import express, { Request, Response, NextFunction } from 'express';
 import { ModuleMetadata } from '../interfaces/module-metadata.interface';
 import { getMetadataArgsStore } from '../decorators/metadata';
 import { RouteMetadataArgs } from '..';
-import { MiddlewareMetadataArgs, RequestMethod } from '../interfaces';
+import { DynamicModule, MiddlewareMetadataArgs, RequestMethod } from '../interfaces';
 import { combineMiddlewares } from '../utils';
 import { CombineRoute, combineRouteWithMiddleware } from './combine-route-with-middleware';
-import { ReflectiveInjector, InjectionToken, Injectable } from 'injection-js';
+import { ReflectiveInjector, InjectionToken, Injectable, Type, Provider } from 'injection-js';
 
-export interface ExpressAppOption {
-  /**
-   * **Global modules** to be imported
-   */
+/**
+ * `ExpressAppOption` is for setting up the **Root ModuleMetadata**,
+ * These controllers , providers will be injected in the Express app,
+ */
 
-  imports?: any[];
+export interface ExpressAppOption extends ModuleMetadata {
 
-  /**
-   * **Global Controllers**, these controllers will be injected in the Express app,
-   * however, it cannot access the providers inside the modules.
-   */
-
-  controllers?: any[];
-
-  /**
-   * **Global providers**, these providers will be injected in all modules
-   */
-
-  providers?: any[];
 }
 
 export function useExpressServer(app: express.Application, option?: ExpressAppOption) {
-  const controllerClasses = option?.controllers || [];
-  const moduleClasses = option?.imports || [];
+  const rootImportModules = option?.imports || [];
+  const rootControllerClasses = option?.controllers || [];
+  const rootProviderClasses = option?.providers || [];
+
+  let moduleMetadata: ModuleMetadata;
+  let moduleClass: Type<any>;
+
 
   /**
-   * Using import module mode
+   * Step 1: Collect all DynamicModule providers
    */
 
-  moduleClasses.forEach((moduleClass) => {
+  let rootDynamicModuleProviders: Provider[] = [];
+  rootImportModules.forEach((importModule: any) => {
 
-    /**
-     * create instance of modules, for bootstrapping some code in each module
-     * Do not add bootstrap code in the constructor, call in `onInit` instead
-     */
-    const moduleInstance = createModuleInstance(moduleClass);
-    if(moduleInstance.hasOwnProperty('forRoot')){
-
+    // If the rootImportModules is DynamicModule
+    if(importModule.hasOwnProperty('module')){
+      const dynamicModule : DynamicModule = importModule;
+      rootDynamicModuleProviders = rootDynamicModuleProviders.concat(dynamicModule?.providers || []);
     }
-
-      const module = Reflect.getMetadata('module', moduleClass);
-      addModule(app, module, option);
 
   });
 
   /**
-   * Using import controller only, strongly recommend to import with modules
+   * Step 2: Import All root modules to express App
    */
 
-  if (controllerClasses.length > 0) addModule(app, { controllers: controllerClasses }, option);
+  rootImportModules.forEach((importModule: any) => {
+
+    // If the rootImportModules is DynamicModule
+
+    if (importModule.hasOwnProperty('module')) {
+      console.log('hey i\'m dynamicModule');
+      const dynamicModule : DynamicModule = importModule;
+      moduleClass = dynamicModule.module; // Assign module class for creating the instance 
+
+    } else if (importModule instanceof Type) {
+
+      moduleClass = importModule; // Assign module class for creating the instance
+
+      /**
+       * Extract metadata information for the module class such as controllers, providers
+       */
+      moduleMetadata = Reflect.getMetadata('module', importModule);
+
+      /**
+       * Attach all `rootDynamicModuleProviders` to each module metadata
+       */ 
+      moduleMetadata.providers = (moduleMetadata.providers || []).concat(rootDynamicModuleProviders);
+      
+    } else {
+      throw new Error('No module provided');
+    }
+
+    /**
+     * Create instance of modules, for bootstrapping some code in each module
+     * Todo: call in `onInit` instead of constructor
+     */
+    
+    const module = createModuleInstance(moduleClass);
+    console.log('Module Name: ' +  module.constructor.name);
+    addModule(app, moduleMetadata, rootProviderClasses);
+  });
+
+  /**
+   * Step 3: Using import root controller only, strongly recommend to import with modules
+   */
+
+  if (rootControllerClasses.length > 0) 
+    addModule(app, { controllers: rootControllerClasses }, rootProviderClasses);
 
   return true;
 }
 
-// function addInjectableModule(app: express.Application, moduleClass: any, option?: ExpressAppOption) {
-//   const moduleInstance = createModuleInstance(moduleClass);
-//   // const globalProvidersClasses = option?.providers || [];
-
-//   if(moduleInstance.hasOwnProperty('forRoot')){
-
-//   }
-// }
-
-function addModule(app: express.Application, module: ModuleMetadata, option?: ExpressAppOption) {
+function addModule(app: express.Application, module: ModuleMetadata, rootProvidersClasses: Provider[]) {
+  console.log('Run addModule ');
   const store = getMetadataArgsStore();
   const controllers = module.controllers || [];
   const providers = module.providers || [];
-  const globalProvidersClasses = option?.providers || [];
 
   controllers.forEach((controller) => {
     /**
@@ -82,7 +103,8 @@ function addModule(app: express.Application, module: ModuleMetadata, option?: Ex
      * Then, get controller instance
      */
 
-    const injector = ReflectiveInjector.resolveAndCreate([controller, ...providers, ...globalProvidersClasses]);
+    const injector = ReflectiveInjector.resolveAndCreate([controller, ...providers, ...rootProvidersClasses]);
+    console.log(rootProvidersClasses);
     const controllerInstance = injector.get(controller) as typeof controller;
 
     const combinedRoutes = combineRouteWithMiddleware(controller, store.routes, store.middlewares);
