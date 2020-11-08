@@ -3,8 +3,7 @@ import express, { Response } from "express";
 import request from 'supertest';
 
 import { MockOneController} from './mock-one.controller';
-
-export const GLOBAL_VAR = new InjectionToken<string>('global_var');
+import { GLOBAL_VAR } from './token';
 
 describe('Module with controller + Global providers (Mock service) GET (e2e)', () => {
 

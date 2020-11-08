@@ -31,7 +31,8 @@
     "test:coverage": "jest --config jestconfig.json --no-cache ---forceExit --coverage",
     "test:watch": "jest --config jestconfig.json --watch --forceExit",
     "prepare": "run-s build",
-    "prepublishOnly": "run-s format lint test build",
+    "check": "run-s format lint", 
+    "prepublishOnly": "run-s test build",
     "publish:patch": "npm version patch --force && npm publish",
     "postpublish": "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag v$PACKAGE_VERSION && git push --tags",
     "example": "chokidar \"**/*.ts\" -c  \" ts-node example/tester/index.ts\"",
@@ -41,9 +42,9 @@
     "doc:dev": "run-p doc:build && run-p doc:watch doc:serve"
   },
   "dependencies": {
+    "@mildjs/di": "^1.2.1",
     "connect": "^3.7.0",
-    "http-status-codes": "^2.1.4",
-    "injection-js": "^2.3.2"
+    "http-status-codes": "^2.1.4"
   },
   "peerDependencies": {
     "reflect-metadata": "^0.1.13",

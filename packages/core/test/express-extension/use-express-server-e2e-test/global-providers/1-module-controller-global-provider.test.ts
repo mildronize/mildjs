@@ -1,6 +1,7 @@
 import { Controller, Get, Module, useExpressServer, InjectionToken } from '../../../../src';
 import express, { Response } from "express";
 import request from 'supertest';
+import {GLOBAL_VAR} from './token';
 
 import { MockModuleController} from './mock-moudule.controller';
 
@@ -9,7 +10,6 @@ import { MockModuleController} from './mock-moudule.controller';
 })
 class MockModule { }
 
-export const GLOBAL_VAR = new InjectionToken<string>('global_var');
 
 describe('Module with controller + Global providers (Mock service) GET (e2e)', () => {
 
