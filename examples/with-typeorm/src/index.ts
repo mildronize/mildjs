@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import express, { Response } from 'express';
 import { UsersModule } from './users/users.module';
 // import { MockModule } from './mock/mock.module';
-import {UsersController} from'./users/users.controller';
+import { UsersController } from './users/users.controller';
 import { useExpressServer, Controller, Get, Injectable, Module, InjectionToken, ReflectiveInjector } from '../../../packages/core/src';
 import { createConnection, Connection } from 'typeorm';
 import { MockController } from './mock/mock.controller';
@@ -19,9 +19,21 @@ const connection = createConnection({
 });
 
 useExpressServer(app, {
-    // imports: [UsersModule],
-    controllers: [MockController],
-    providers: [ { provide: TYPEORM_CONNECTION, useValue: connection } ]
+    imports: [UsersModule],
+    // controllers: [MockController],
+    providers: [{ provide: TYPEORM_CONNECTION, useValue: connection }]
 });
 app.listen(3000);
 console.log("server listening at port 3000")
+
+// interface A {
+
+// }
+
+// class Cat implements A {
+ 
+// }
+
+// const cat = new Cat();
+
+// console.log(cat instanceof A );
