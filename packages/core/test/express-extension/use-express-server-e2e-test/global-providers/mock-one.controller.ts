@@ -1,11 +1,11 @@
 import { Controller, Get, Module, useExpressServer, Injectable, Inject } from '../../../../src';
 import { Response } from 'express';
-import {GLOBAL_VAR} from './token';
+// import {GLOBAL_VAR} from './token';
 
 @Controller()
 export class MockOneController {
 
-    constructor(@Inject(GLOBAL_VAR) private data: string) { }
+    constructor(@Inject('GLOBAL_VAR') private data: string) { }
 
     @Get()
     index(req: any, res: Response) {

@@ -1,7 +1,6 @@
-import { Controller, Get, Module, useExpressServer, InjectionToken } from '../../../../src';
+import { Controller, Get, Module, useExpressServer } from '../../../../src';
 import express, { Response } from "express";
 import request from 'supertest';
-import {GLOBAL_VAR} from './token';
 
 import { MockModuleController} from './mock-moudule.controller';
 
@@ -19,7 +18,7 @@ describe('Module with controller + Global providers (Mock service) GET (e2e)', (
         
         useExpressServer(app, { 
             imports: [MockModule],
-            providers: [{ provide: GLOBAL_VAR, useValue: "global mock data" } ]
+            providers: [{ provide: 'GLOBAL_VAR', useValue: "global mock data" } ]
          });
         app.listen();
     });

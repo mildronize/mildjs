@@ -6,7 +6,7 @@ import { DynamicModule, MiddlewareMetadataArgs, RequestMethod } from '../interfa
 import { combineMiddlewares } from '../utils';
 import { CombineRoute, combineRouteWithMiddleware } from './combine-route-with-middleware';
 // import { ReflectiveInjector, InjectionToken, Injectable, Type, Provider } from 'injection-js';
-import { ReflectiveInjector, InjectionToken, Injectable, Constructor, isConstructor, Provider } from '@mildjs/di';
+import { ReflectiveInjector, Injectable, Constructor, isConstructor, Provider } from '@mildjs/di';
 
 /**
  * `ExpressAppOption` is for setting up the **Root ModuleMetadata**,
