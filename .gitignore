@@ -46,3 +46,6 @@ typings/
 
 # generate output
 dist
+
+# Doc local gen
+_docs
